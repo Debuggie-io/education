@@ -1,0 +1,223 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:ARCHIVE-{YYYY}-{####}",
+ "creation": "2026-03-12 15:41:13.757881",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "archive_type",
+  "column_break_1",
+  "student_government",
+  "academic_year",
+  "details_section",
+  "document_date",
+  "prepared_by",
+  "column_break_2",
+  "approved_by",
+  "approval_date",
+  "content_section",
+  "summary",
+  "content",
+  "attachments_section",
+  "primary_document",
+  "supporting_documents",
+  "handover_section",
+  "outgoing_officer",
+  "incoming_officer",
+  "column_break_3",
+  "handover_date",
+  "handover_notes",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "archive_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Archive Type",
+   "options": "\nMeeting Minutes\nProject Report\nFinancial Report\nHandover Document\nConstitution Amendment\nPolicy Document\nEvent Report\nOther",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "student_government",
+   "fieldtype": "Link",
+   "label": "Student Government",
+   "options": "Student Government",
+   "reqd": 1
+  },
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Document Details"
+  },
+  {
+   "fieldname": "document_date",
+   "fieldtype": "Date",
+   "label": "Document Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "prepared_by",
+   "fieldtype": "Link",
+   "label": "Prepared By",
+   "options": "Student Government Member"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "Student Government Member"
+  },
+  {
+   "fieldname": "approval_date",
+   "fieldtype": "Date",
+   "label": "Approval Date"
+  },
+  {
+   "fieldname": "content_section",
+   "fieldtype": "Section Break",
+   "label": "Content"
+  },
+  {
+   "fieldname": "summary",
+   "fieldtype": "Small Text",
+   "label": "Summary"
+  },
+  {
+   "fieldname": "content",
+   "fieldtype": "Text Editor",
+   "label": "Full Content"
+  },
+  {
+   "fieldname": "attachments_section",
+   "fieldtype": "Section Break",
+   "label": "Attachments"
+  },
+  {
+   "fieldname": "primary_document",
+   "fieldtype": "Attach",
+   "label": "Primary Document"
+  },
+  {
+   "fieldname": "supporting_documents",
+   "fieldtype": "Table",
+   "label": "Supporting Documents",
+   "options": "Governance Archive Attachment"
+  },
+  {
+   "collapsible": 1,
+   "depends_on": "eval:doc.archive_type=='Handover Document'",
+   "fieldname": "handover_section",
+   "fieldtype": "Section Break",
+   "label": "Handover Details"
+  },
+  {
+   "fieldname": "outgoing_officer",
+   "fieldtype": "Link",
+   "label": "Outgoing Officer",
+   "options": "Student Government Member"
+  },
+  {
+   "fieldname": "incoming_officer",
+   "fieldtype": "Link",
+   "label": "Incoming Officer",
+   "options": "Student Government Member"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "handover_date",
+   "fieldtype": "Date",
+   "label": "Handover Date"
+  },
+  {
+   "fieldname": "handover_notes",
+   "fieldtype": "Small Text",
+   "label": "Handover Notes"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Governance Archive",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-03-12 15:41:13.757881",
+ "modified_by": "Administrator",
+ "module": "Student Governance",
+ "name": "Governance Archive",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Education Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

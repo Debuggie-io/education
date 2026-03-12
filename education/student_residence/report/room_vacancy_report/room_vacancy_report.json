@@ -1,0 +1,44 @@
+{
+    "add_total_row": 0,
+    "columns": [],
+    "creation": "2026-03-11 12:00:00.000000",
+    "disabled": 0,
+    "docstatus": 0,
+    "doctype": "Report",
+    "filters": [
+        {
+            "fieldname": "hostel",
+            "fieldtype": "Link",
+            "label": "Hostel",
+            "options": "Hostel"
+        },
+        {
+            "fieldname": "hostel_type",
+            "fieldtype": "Select",
+            "label": "Hostel Type",
+            "options": "\nMens Hostel\nLadies Hostel"
+        },
+        {
+            "fieldname": "show_only_vacant",
+            "fieldtype": "Check",
+            "label": "Show Only Vacant Rooms"
+        }
+    ],
+    "idx": 0,
+    "is_standard": "Yes",
+    "modified": "2026-03-11 12:00:00.000000",
+    "modified_by": "Administrator",
+    "module": "Student Residence",
+    "name": "Room Vacancy Report",
+    "owner": "Administrator",
+    "prepared_report": 0,
+    "ref_doctype": "Hostel Room",
+    "report_name": "Room Vacancy Report",
+    "report_type": "Script Report",
+    "roles": [
+        {"role": "System Manager"},
+        {"role": "Education Manager"},
+        {"role": "Residence Administrator"},
+        {"role": "Dean of Residence"}
+    ]
+}

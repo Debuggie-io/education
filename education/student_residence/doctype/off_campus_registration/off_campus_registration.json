@@ -1,0 +1,379 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "OCR-.YYYY.-.####",
+ "creation": "2026-03-11 22:53:45.981050",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "student",
+  "student_name",
+  "gender",
+  "column_break_1",
+  "program",
+  "academic_year",
+  "academic_term",
+  "section_residence",
+  "registration_type",
+  "listed_property",
+  "column_break_res",
+  "is_approved_property",
+  "section_address",
+  "plot_number",
+  "door_number",
+  "street_road",
+  "column_break_addr",
+  "area_estate",
+  "landmark",
+  "full_address",
+  "section_landlord",
+  "landlord_name",
+  "landlord_phone",
+  "column_break_land",
+  "landlord_alternative_phone",
+  "landlord_email",
+  "section_emergency",
+  "emergency_contact_name",
+  "emergency_contact_phone",
+  "column_break_emg",
+  "relationship",
+  "section_status",
+  "status",
+  "registration_date",
+  "column_break_stat",
+  "verified_by",
+  "verification_date",
+  "confirmation_date",
+  "section_notes",
+  "student_notes",
+  "admin_notes",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Student",
+   "options": "Student",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "student.student_name",
+   "fieldname": "student_name",
+   "fieldtype": "Data",
+   "label": "Student Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "student.gender",
+   "fieldname": "gender",
+   "fieldtype": "Data",
+   "label": "Gender",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "student.program",
+   "fieldname": "program",
+   "fieldtype": "Data",
+   "label": "Program",
+   "read_only": 1
+  },
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "reqd": 1
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "label": "Semester/Term",
+   "options": "Academic Term",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_residence",
+   "fieldtype": "Section Break",
+   "label": "Residence Details"
+  },
+  {
+   "fieldname": "registration_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Registration Type",
+   "options": "\nNew Registration\nContinuation\nChange of Residence",
+   "reqd": 1
+  },
+  {
+   "description": "Optional: Select from university-approved properties",
+   "fieldname": "listed_property",
+   "fieldtype": "Link",
+   "label": "Select from Listed Properties",
+   "options": "Landlord Property"
+  },
+  {
+   "fieldname": "column_break_res",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_approved_property",
+   "fieldtype": "Check",
+   "label": "University Approved Property",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_address",
+   "fieldtype": "Section Break",
+   "label": "Physical Address"
+  },
+  {
+   "fieldname": "plot_number",
+   "fieldtype": "Data",
+   "label": "Plot Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "door_number",
+   "fieldtype": "Data",
+   "label": "Door/House Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "street_road",
+   "fieldtype": "Data",
+   "label": "Street/Road Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_addr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "area_estate",
+   "fieldtype": "Data",
+   "label": "Area/Estate Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "landmark",
+   "fieldtype": "Data",
+   "label": "Nearest Landmark"
+  },
+  {
+   "fieldname": "full_address",
+   "fieldtype": "Small Text",
+   "label": "Full Address",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_landlord",
+   "fieldtype": "Section Break",
+   "label": "Landlord/Caretaker Details"
+  },
+  {
+   "fieldname": "landlord_name",
+   "fieldtype": "Data",
+   "label": "Landlord/Caretaker Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "landlord_phone",
+   "fieldtype": "Data",
+   "label": "Landlord Phone",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_land",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "landlord_alternative_phone",
+   "fieldtype": "Data",
+   "label": "Alternative Phone"
+  },
+  {
+   "fieldname": "landlord_email",
+   "fieldtype": "Data",
+   "label": "Landlord Email",
+   "options": "Email"
+  },
+  {
+   "fieldname": "section_emergency",
+   "fieldtype": "Section Break",
+   "label": "Emergency Contact"
+  },
+  {
+   "fieldname": "emergency_contact_name",
+   "fieldtype": "Data",
+   "label": "Emergency Contact Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "emergency_contact_phone",
+   "fieldtype": "Data",
+   "label": "Emergency Contact Phone",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_emg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "relationship",
+   "fieldtype": "Data",
+   "label": "Relationship to Student"
+  },
+  {
+   "fieldname": "section_status",
+   "fieldtype": "Section Break",
+   "label": "Status"
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "\nDraft\nSubmitted\nVerified\nConfirmed\nExpired",
+   "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "registration_date",
+   "fieldtype": "Date",
+   "label": "Registration Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_stat",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "verified_by",
+   "fieldtype": "Link",
+   "label": "Verified By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "verification_date",
+   "fieldtype": "Date",
+   "label": "Verification Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "confirmation_date",
+   "fieldtype": "Date",
+   "label": "Continuation Confirmed On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_notes",
+   "fieldtype": "Section Break",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "student_notes",
+   "fieldtype": "Small Text",
+   "label": "Student Notes"
+  },
+  {
+   "fieldname": "admin_notes",
+   "fieldtype": "Small Text",
+   "label": "Admin Notes"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Off Campus Registration",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-03-11 22:53:45.981050",
+ "modified_by": "Administrator",
+ "module": "Student Residence",
+ "name": "Off Campus Registration",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Education Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Dean of Residence",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "if_owner": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Student",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

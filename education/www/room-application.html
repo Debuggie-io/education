@@ -1,0 +1,134 @@
+{% extends "templates/web.html" %}
+
+{% block title %}Room Booking Application{% endblock %}
+
+{% block page_content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">🏠 Hostel Room Application</h4>
+                </div>
+                <div class="card-body">
+                    {% if not frappe.session.user or frappe.session.user == "Guest" %}
+                        <div class="alert alert-warning">
+                            <strong>Please log in to apply for hostel accommodation.</strong>
+                            <br><a href="/login?redirect-to=/room-application" class="btn btn-primary mt-2">Login</a>
+                        </div>
+                    {% elif not student %}
+                        <div class="alert alert-danger">
+                            <strong>No student record found for your account.</strong>
+                            <br>Please contact the administration.
+                        </div>
+                    {% elif not application_period %}
+                        <div class="alert alert-info">
+                            <strong>Applications are currently closed.</strong>
+                            <br>Please check back later when the application period opens.
+                        </div>
+                    {% elif existing_application %}
+                        <div class="alert alert-success">
+                            <strong>You have already submitted an application!</strong>
+                            <br>Application ID: <strong>{{ existing_application.name }}</strong>
+                            <br>Status: <strong>{{ existing_application.status }}</strong>
+                            {% if existing_application.allocated_room %}
+                            <br>Allocated Room: <strong>{{ existing_application.allocated_room }}</strong>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <form id="room-application-form" method="POST" action="/api/method/education.student_residence.api.submit_room_application">
+                            <input type="hidden" name="csrf_token" value="{{ frappe.session.csrf_token }}">
+                            <input type="hidden" name="student" value="{{ student.name }}">
+                            <input type="hidden" name="application_period" value="{{ application_period.name }}">
+                            
+                            <div class="mb-4">
+                                <h5>Student Information</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Name:</strong> {{ student.student_name }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Gender:</strong> {{ student.gender }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Program:</strong> {{ student.program }}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Academic Year:</strong> {{ application_period.academic_year }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <hr>
+                            
+                            <div class="mb-3">
+                                <label for="preferred_hostel" class="form-label">Preferred Hostel</label>
+                                <select class="form-select" id="preferred_hostel" name="preferred_hostel" required>
+                                    <option value="">Select Hostel...</option>
+                                    {% for hostel in hostels %}
+                                    <option value="{{ hostel.name }}">{{ hostel.name }} ({{ hostel.hostel_type }})</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="preferred_room_type" class="form-label">Preferred Room Type</label>
+                                <select class="form-select" id="preferred_room_type" name="preferred_room_type">
+                                    <option value="">No Preference</option>
+                                    <option value="Standard">Standard (4 beds)</option>
+                                    <option value="Single">Single (1 bed)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="special_requirements" class="form-label">Special Requirements (Optional)</label>
+                                <textarea class="form-control" id="special_requirements" name="special_requirements" rows="3" placeholder="Any medical conditions, accessibility needs, etc."></textarea>
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">Submit Application</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+            
+            {% if application_period %}
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5>📅 Application Period Information</h5>
+                    <p><strong>Period:</strong> {{ application_period.academic_year }}</p>
+                    <p><strong>Start Date:</strong> {{ frappe.format_date(application_period.application_start_date) }}</p>
+                    <p><strong>End Date:</strong> {{ frappe.format_date(application_period.application_end_date) }}</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('room-application-form')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    let formData = new FormData(this);
+    let data = {};
+    formData.forEach((value, key) => data[key] = value);
+    
+    frappe.call({
+        method: 'education.student_residence.api.submit_room_application',
+        args: data,
+        callback: function(r) {
+            if (r.message && r.message.success) {
+                frappe.msgprint({
+                    title: 'Success',
+                    message: 'Your application has been submitted successfully!',
+                    indicator: 'green'
+                });
+                setTimeout(() => window.location.reload(), 2000);
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

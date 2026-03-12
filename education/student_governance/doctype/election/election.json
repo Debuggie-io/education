@@ -1,0 +1,300 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:ELEC-{YYYY}-{####}",
+ "creation": "2026-03-12 15:34:34.914553",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "election_name",
+  "election_type",
+  "column_break_1",
+  "academic_year",
+  "status",
+  "timeline_section",
+  "nomination_start_date",
+  "nomination_end_date",
+  "column_break_2",
+  "campaign_start_date",
+  "campaign_end_date",
+  "voting_section",
+  "voting_start_date",
+  "voting_end_date",
+  "column_break_3",
+  "results_declaration_date",
+  "eligibility_section",
+  "minimum_gpa_to_vote",
+  "minimum_gpa_to_contest",
+  "column_break_4",
+  "allow_disciplinary_cases",
+  "eligible_programs",
+  "security_section",
+  "require_mfa",
+  "require_nfc_validation",
+  "column_break_5",
+  "hash_algorithm",
+  "stats_section",
+  "total_eligible_voters",
+  "total_votes_cast",
+  "column_break_6",
+  "voter_turnout_percentage",
+  "description_section",
+  "description",
+  "rules_and_guidelines",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "election_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Election Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "election_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Election Type",
+   "options": "\nGeneral Election\nBy-Election\nReferendum\nClass Representative",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "reqd": 1
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "\nDraft\nNomination Open\nNomination Closed\nCampaigning\nVoting Open\nVoting Closed\nResults Declared\nCancelled"
+  },
+  {
+   "fieldname": "timeline_section",
+   "fieldtype": "Section Break",
+   "label": "Election Timeline"
+  },
+  {
+   "fieldname": "nomination_start_date",
+   "fieldtype": "Datetime",
+   "label": "Nomination Start",
+   "reqd": 1
+  },
+  {
+   "fieldname": "nomination_end_date",
+   "fieldtype": "Datetime",
+   "label": "Nomination End",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "campaign_start_date",
+   "fieldtype": "Datetime",
+   "label": "Campaign Start"
+  },
+  {
+   "fieldname": "campaign_end_date",
+   "fieldtype": "Datetime",
+   "label": "Campaign End"
+  },
+  {
+   "fieldname": "voting_section",
+   "fieldtype": "Section Break",
+   "label": "Voting Period"
+  },
+  {
+   "fieldname": "voting_start_date",
+   "fieldtype": "Datetime",
+   "label": "Voting Start",
+   "reqd": 1
+  },
+  {
+   "fieldname": "voting_end_date",
+   "fieldtype": "Datetime",
+   "label": "Voting End",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "results_declaration_date",
+   "fieldtype": "Datetime",
+   "label": "Results Declaration Date"
+  },
+  {
+   "fieldname": "eligibility_section",
+   "fieldtype": "Section Break",
+   "label": "Eligibility Requirements"
+  },
+  {
+   "default": "0",
+   "fieldname": "minimum_gpa_to_vote",
+   "fieldtype": "Float",
+   "label": "Minimum GPA to Vote"
+  },
+  {
+   "default": "2.5",
+   "fieldname": "minimum_gpa_to_contest",
+   "fieldtype": "Float",
+   "label": "Minimum GPA to Contest"
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_disciplinary_cases",
+   "fieldtype": "Check",
+   "label": "Allow Students with Active Disciplinary Cases"
+  },
+  {
+   "fieldname": "eligible_programs",
+   "fieldtype": "Table MultiSelect",
+   "label": "Eligible Programs",
+   "options": "Election Eligible Program"
+  },
+  {
+   "fieldname": "security_section",
+   "fieldtype": "Section Break",
+   "label": "Security Settings"
+  },
+  {
+   "default": "1",
+   "fieldname": "require_mfa",
+   "fieldtype": "Check",
+   "label": "Require Multi-Factor Authentication"
+  },
+  {
+   "default": "0",
+   "fieldname": "require_nfc_validation",
+   "fieldtype": "Check",
+   "label": "Require NFC Card Validation"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "SHA-256",
+   "fieldname": "hash_algorithm",
+   "fieldtype": "Select",
+   "label": "Hash Algorithm",
+   "options": "\nSHA-256\nSHA-512"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "stats_section",
+   "fieldtype": "Section Break",
+   "label": "Statistics"
+  },
+  {
+   "fieldname": "total_eligible_voters",
+   "fieldtype": "Int",
+   "label": "Total Eligible Voters",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_votes_cast",
+   "fieldtype": "Int",
+   "label": "Total Votes Cast",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "voter_turnout_percentage",
+   "fieldtype": "Percent",
+   "label": "Voter Turnout",
+   "read_only": 1
+  },
+  {
+   "fieldname": "description_section",
+   "fieldtype": "Section Break",
+   "label": "Description"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Election Description"
+  },
+  {
+   "fieldname": "rules_and_guidelines",
+   "fieldtype": "Text Editor",
+   "label": "Rules & Guidelines"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Election",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-03-12 15:34:34.914553",
+ "modified_by": "Administrator",
+ "module": "Student Governance",
+ "name": "Election",
+ "naming_rule": "Expression (old style)",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Education Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

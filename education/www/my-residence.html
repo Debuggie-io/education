@@ -1,0 +1,105 @@
+{% extends "templates/web.html" %}
+
+{% block title %}My Residence{% endblock %}
+
+{% block page_content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h2 class="mb-4">🏠 My Residence Status</h2>
+            
+            {% if not frappe.session.user or frappe.session.user == "Guest" %}
+                <div class="alert alert-warning">
+                    <strong>Please log in to view your residence status.</strong>
+                    <br><a href="/login?redirect-to=/my-residence" class="btn btn-primary mt-2">Login</a>
+                </div>
+            {% elif not student %}
+                <div class="alert alert-danger">
+                    <strong>No student record found for your account.</strong>
+                </div>
+            {% else %}
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Student Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Name:</strong> {{ student.student_name }}</p>
+                                <p><strong>Student ID:</strong> {{ student.name }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Program:</strong> {{ student.program }}</p>
+                                <p><strong>Gender:</strong> {{ student.gender }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if residence %}
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">✅ Current Residence</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Residence Type:</strong> {{ residence.residence_type }}</p>
+                                <p><strong>Academic Year:</strong> {{ residence.academic_year }}</p>
+                            </div>
+                            {% if residence.residence_type == "On Campus" %}
+                            <div class="col-md-6">
+                                <p><strong>Hostel:</strong> {{ residence.hostel }}</p>
+                                <p><strong>Room:</strong> {{ residence.hostel_room }}</p>
+                                <p><strong>Check-in Date:</strong> {{ frappe.format_date(residence.check_in_date) }}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <strong>No active residence record found.</strong>
+                    <br>
+                    <a href="/room-application" class="btn btn-primary mt-2">Apply for Hostel</a>
+                </div>
+                {% endif %}
+                
+                {% if applications %}
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">📋 Application History</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Application ID</th>
+                                    <th>Academic Year</th>
+                                    <th>Status</th>
+                                    <th>Allocated Room</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for app in applications %}
+                                <tr>
+                                    <td>{{ app.name }}</td>
+                                    <td>{{ app.academic_year }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'success' if app.status == 'Allocated' else 'warning' if app.status == 'Pending' else 'danger' if app.status == 'Rejected' else 'secondary' }}">
+                                            {{ app.status }}
+                                        </span>
+                                    </td>
+                                    <td>{{ app.allocated_room or '-' }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

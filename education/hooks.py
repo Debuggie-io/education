@@ -277,3 +277,6 @@ before_tests = "education.education.test_utils.before_tests"
 # Recommended only for DocTypes which have limited documents with untranslated names
 # For example: Role, Gender, etc.
 # translated_search_doctypes = []
+
+# Whitelisted methods for Student Residence
+# (These are handled by @frappe.whitelist() decorator in api.py)

@@ -1,0 +1,249 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "expr:RBA-{####}",
+ "creation": "2026-03-11 14:16:05.627713",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "student",
+  "student_name",
+  "gender",
+  "column_break_1",
+  "application_period",
+  "academic_year",
+  "application_date",
+  "section_break_pref",
+  "preferred_hostel",
+  "preferred_room_type",
+  "column_break_2",
+  "roommate_preference",
+  "special_requirements",
+  "section_break_alloc",
+  "allocated_hostel",
+  "allocated_room",
+  "column_break_3",
+  "allocation_date",
+  "allocated_by",
+  "section_break_status",
+  "status",
+  "rejection_reason",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Student",
+   "options": "Student",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "student.student_name",
+   "fieldname": "student_name",
+   "fieldtype": "Data",
+   "label": "Student Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "student.gender",
+   "fieldname": "gender",
+   "fieldtype": "Data",
+   "label": "Gender",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "application_period",
+   "fieldtype": "Link",
+   "label": "Application Period",
+   "options": "Residence Application Period",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "application_period.academic_year",
+   "fieldname": "academic_year",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Academic Year",
+   "options": "Academic Year",
+   "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "application_date",
+   "fieldtype": "Date",
+   "label": "Application Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_pref",
+   "fieldtype": "Section Break",
+   "label": "Preferences"
+  },
+  {
+   "fieldname": "preferred_hostel",
+   "fieldtype": "Link",
+   "label": "Preferred Hostel",
+   "options": "Hostel"
+  },
+  {
+   "fieldname": "preferred_room_type",
+   "fieldtype": "Select",
+   "label": "Preferred Room Type",
+   "options": "\nStandard\nDeluxe\nSingle"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "roommate_preference",
+   "fieldtype": "Link",
+   "label": "Preferred Roommate",
+   "options": "Student"
+  },
+  {
+   "fieldname": "special_requirements",
+   "fieldtype": "Small Text",
+   "label": "Special Requirements"
+  },
+  {
+   "fieldname": "section_break_alloc",
+   "fieldtype": "Section Break",
+   "label": "Allocation (Admin Use)"
+  },
+  {
+   "fieldname": "allocated_hostel",
+   "fieldtype": "Link",
+   "label": "Allocated Hostel",
+   "options": "Hostel"
+  },
+  {
+   "fieldname": "allocated_room",
+   "fieldtype": "Link",
+   "label": "Allocated Room",
+   "options": "Hostel Room"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "allocation_date",
+   "fieldtype": "Date",
+   "label": "Allocation Date"
+  },
+  {
+   "fieldname": "allocated_by",
+   "fieldtype": "Link",
+   "label": "Allocated By",
+   "options": "User"
+  },
+  {
+   "fieldname": "section_break_status",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "Pending",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "\nPending\nApproved\nRejected\nAllocated\nCancelled"
+  },
+  {
+   "depends_on": "eval:doc.status=='Rejected'",
+   "fieldname": "rejection_reason",
+   "fieldtype": "Small Text",
+   "label": "Rejection Reason"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Room Booking Application",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-03-11 14:36:02.294019",
+ "modified_by": "Administrator",
+ "module": "Student Residence",
+ "name": "Room Booking Application",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Education Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Residence Administrator",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Dean of Residence",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}
