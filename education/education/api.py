@@ -794,3 +794,897 @@ def get_student_attendance(student, student_group):
 		filters={"student": student, "student_group": student_group, "docstatus": 1},
 		fields=["date", "status", "name"],
 	)
+
+
+# ============================================================
+# UEAB Student Portal - New APIs
+# ============================================================
+
+# Graduation & Clearance APIs
+@frappe.whitelist()
+def get_graduation_status(student):
+	"""Get student graduation eligibility and status.
+	
+	:param student: Student ID
+	:returns: dict with graduation eligibility info
+	"""
+	enrollment = get_current_enrollment(student)
+	if not enrollment:
+		return {"eligible": False, "message": "No active enrollment found"}
+	
+	program = enrollment.get("program")
+	program_doc = frappe.get_doc("Program", program)
+	
+	# Get completed courses
+	completed_courses = frappe.db.get_list(
+		"Assessment Result",
+		filters={"student": student, "docstatus": 1},
+		fields=["course"],
+		distinct=True
+	)
+	completed_course_ids = [c.course for c in completed_courses]
+	
+	# Get required courses from program
+	required_courses = [c.course for c in program_doc.courses]
+	
+	# Calculate completion
+	total_required = len(required_courses)
+	total_completed = len(set(completed_course_ids) & set(required_courses))
+	completion_percentage = (total_completed / total_required * 100) if total_required > 0 else 0
+	
+	return {
+		"student": student,
+		"program": program,
+		"total_required_courses": total_required,
+		"completed_courses": total_completed,
+		"completion_percentage": round(completion_percentage, 1),
+		"eligible": completion_percentage >= 100,
+		"status": "Eligible for Graduation" if completion_percentage >= 100 else "In Progress"
+	}
+
+
+@frappe.whitelist()
+def get_clearance_status(student):
+	"""Get clearance status by department.
+	
+	:param student: Student ID
+	:returns: dict with clearance status per department
+	"""
+	# Check finance clearance
+	outstanding_invoices = frappe.db.get_list(
+		"Sales Invoice",
+		filters={
+			"student": student,
+			"status": ["in", ["Unpaid", "Overdue", "Partly Paid"]],
+			"docstatus": 1
+		},
+		fields=["name", "outstanding_amount"]
+	)
+	finance_cleared = len(outstanding_invoices) == 0
+	finance_balance = sum(inv.outstanding_amount for inv in outstanding_invoices)
+	
+	# Check library clearance (placeholder - needs Library doctype)
+	library_cleared = True
+	library_pending = 0
+	
+	# Check hostel clearance (placeholder - needs Room Allocation doctype)
+	hostel_cleared = True
+	
+	# Check academic clearance
+	graduation_status = get_graduation_status(student)
+	academic_cleared = graduation_status.get("completion_percentage", 0) >= 100
+	
+	departments = [
+		{
+			"department": "Finance",
+			"cleared": finance_cleared,
+			"pending_items": 0 if finance_cleared else len(outstanding_invoices),
+			"details": f"Outstanding balance: {finance_balance}" if not finance_cleared else "All fees paid"
+		},
+		{
+			"department": "Library",
+			"cleared": library_cleared,
+			"pending_items": library_pending,
+			"details": "All books returned" if library_cleared else "Books pending return"
+		},
+		{
+			"department": "Hostel",
+			"cleared": hostel_cleared,
+			"pending_items": 0,
+			"details": "Room cleared" if hostel_cleared else "Room clearance pending"
+		},
+		{
+			"department": "Academic",
+			"cleared": academic_cleared,
+			"pending_items": 0,
+			"details": "All requirements met" if academic_cleared else "Course requirements pending"
+		},
+		{
+			"department": "Student Affairs",
+			"cleared": True,
+			"pending_items": 0,
+			"details": "No pending issues"
+		}
+	]
+	
+	total_departments = len(departments)
+	cleared_departments = sum(1 for d in departments if d["cleared"])
+	overall_progress = round(cleared_departments / total_departments * 100, 1)
+	
+	return {
+		"student": student,
+		"departments": departments,
+		"overall_cleared": cleared_departments == total_departments,
+		"overall_progress": overall_progress,
+		"cleared_count": cleared_departments,
+		"total_count": total_departments
+	}
+
+
+@frappe.whitelist()
+def get_degree_audit(student, program=None):
+	"""Get degree requirements vs completed courses.
+	
+	:param student: Student ID
+	:param program: Program name (optional, uses current enrollment if not provided)
+	:returns: dict with degree audit information
+	"""
+	if not program:
+		enrollment = get_current_enrollment(student)
+		if not enrollment:
+			return {"error": "No active enrollment found"}
+		program = enrollment.get("program")
+	
+	program_doc = frappe.get_doc("Program", program)
+	
+	# Get all required courses
+	required_courses = []
+	for course in program_doc.courses:
+		course_doc = frappe.get_doc("Course", course.course)
+		required_courses.append({
+			"course": course.course,
+			"course_name": course_doc.course_name,
+			"required": course.required if hasattr(course, "required") else True
+		})
+	
+	# Get completed courses with grades
+	completed_results = frappe.db.get_list(
+		"Assessment Result",
+		filters={"student": student, "docstatus": 1},
+		fields=["course", "total_score", "maximum_score", "grade"]
+	)
+	completed_map = {r.course: r for r in completed_results}
+	
+	# Build audit
+	audit_items = []
+	total_credits = 0
+	earned_credits = 0
+	
+	for req in required_courses:
+		completed = req["course"] in completed_map
+		result = completed_map.get(req["course"], {})
+		
+		item = {
+			"course": req["course"],
+			"course_name": req["course_name"],
+			"required": req["required"],
+			"completed": completed,
+			"grade": result.get("grade", "-"),
+			"score": f"{result.get('total_score', '-')}/{result.get('maximum_score', '-')}" if completed else "-",
+			"status": "Completed" if completed else "Pending"
+		}
+		audit_items.append(item)
+		total_credits += 1
+		if completed:
+			earned_credits += 1
+	
+	return {
+		"student": student,
+		"program": program,
+		"program_name": program_doc.program_name,
+		"audit_items": audit_items,
+		"total_requirements": total_credits,
+		"completed_requirements": earned_credits,
+		"completion_percentage": round(earned_credits / total_credits * 100, 1) if total_credits > 0 else 0
+	}
+
+
+# Residence/Housing APIs
+@frappe.whitelist()
+def get_student_room_allocation(student):
+	"""Get current room assignment for a student.
+	
+	:param student: Student ID
+	:returns: dict with room allocation details
+	"""
+	# Check if Room Allocation doctype exists
+	if not frappe.db.exists("DocType", "Room Allocation"):
+		return {
+			"allocated": False,
+			"message": "Room allocation system not configured"
+		}
+	
+	allocation = frappe.db.get_list(
+		"Room Allocation",
+		filters={"student": student, "status": "Active"},
+		fields=["name", "room", "building", "floor", "allocation_date", "expiry_date"],
+		limit=1
+	)
+	
+	if allocation:
+		return {
+			"allocated": True,
+			"allocation": allocation[0]
+		}
+	
+	return {
+		"allocated": False,
+		"message": "No active room allocation found"
+	}
+
+
+@frappe.whitelist()
+def get_available_rooms():
+	"""Get available rooms for housing application.
+	
+	:returns: list of available rooms
+	"""
+	if not frappe.db.exists("DocType", "Room"):
+		return []
+	
+	rooms = frappe.db.get_list(
+		"Room",
+		filters={"status": "Available"},
+		fields=["name", "room_number", "building", "floor", "capacity", "room_type", "amenities"]
+	)
+	
+	return rooms
+
+
+@frappe.whitelist()
+def apply_for_housing(student, room_preference, academic_year=None):
+	"""Submit housing application.
+	
+	:param student: Student ID
+	:param room_preference: Preferred room or room type
+	:param academic_year: Academic year (optional)
+	:returns: dict with application status
+	"""
+	if not frappe.db.exists("DocType", "Housing Application"):
+		return {
+			"success": False,
+			"message": "Housing application system not configured"
+		}
+	
+	# Check for existing application
+	existing = frappe.db.exists(
+		"Housing Application",
+		{"student": student, "status": ["in", ["Pending", "Approved"]]}
+	)
+	
+	if existing:
+		return {
+			"success": False,
+			"message": "You already have a pending or approved housing application"
+		}
+	
+	# Create new application
+	application = frappe.new_doc("Housing Application")
+	application.student = student
+	application.room_preference = room_preference
+	application.academic_year = academic_year or frappe.defaults.get_defaults().get("academic_year")
+	application.status = "Pending"
+	application.application_date = today()
+	application.save(ignore_permissions=True)
+	
+	return {
+		"success": True,
+		"application": application.name,
+		"message": "Housing application submitted successfully"
+	}
+
+
+@frappe.whitelist()
+def submit_maintenance_request(student, room, issue_type, description, priority="Medium"):
+	"""Submit room maintenance request.
+	
+	:param student: Student ID
+	:param room: Room number/ID
+	:param issue_type: Type of issue
+	:param description: Detailed description
+	:param priority: Priority level (Low, Medium, High)
+	:returns: dict with request status
+	"""
+	if not frappe.db.exists("DocType", "Maintenance Request"):
+		return {
+			"success": False,
+			"message": "Maintenance request system not configured"
+		}
+	
+	request = frappe.new_doc("Maintenance Request")
+	request.student = student
+	request.room = room
+	request.issue_type = issue_type
+	request.description = description
+	request.priority = priority
+	request.status = "Open"
+	request.request_date = today()
+	request.save(ignore_permissions=True)
+	
+	return {
+		"success": True,
+		"request": request.name,
+		"message": "Maintenance request submitted successfully"
+	}
+
+
+# Student Governance APIs
+@frappe.whitelist()
+def get_student_council():
+	"""Get current student council members.
+	
+	:returns: list of council members
+	"""
+	if not frappe.db.exists("DocType", "Student Council Member"):
+		return []
+	
+	council = frappe.db.get_list(
+		"Student Council Member",
+		filters={"status": "Active"},
+		fields=["name", "student", "position", "term_start", "term_end", "photo"],
+		order_by="position"
+	)
+	
+	# Enrich with student details
+	for member in council:
+		student_info = frappe.db.get_value(
+			"Student",
+			member.student,
+			["student_name", "student_email_id"],
+			as_dict=True
+		)
+		if student_info:
+			member.update(student_info)
+	
+	return council
+
+
+@frappe.whitelist()
+def get_clubs_and_organizations():
+	"""Get list of student clubs and organizations.
+	
+	:returns: list of clubs
+	"""
+	if not frappe.db.exists("DocType", "Student Club"):
+		return []
+	
+	clubs = frappe.db.get_list(
+		"Student Club",
+		filters={"status": "Active"},
+		fields=["name", "club_name", "description", "category", "meeting_schedule", "advisor", "logo"]
+	)
+	
+	return clubs
+
+
+@frappe.whitelist()
+def get_student_events(limit=10):
+	"""Get upcoming events.
+	
+	:param limit: Maximum number of events to return
+	:returns: list of events
+	"""
+	if not frappe.db.exists("DocType", "Student Event"):
+		return []
+	
+	events = frappe.db.get_list(
+		"Student Event",
+		filters={"event_date": [">=", today()], "status": "Scheduled"},
+		fields=["name", "event_name", "event_date", "event_time", "venue", "description", "category", "organizer"],
+		order_by="event_date asc",
+		limit=limit
+	)
+	
+	return events
+
+
+@frappe.whitelist()
+def submit_feedback(student, feedback_type, subject, message, is_anonymous=False):
+	"""Submit student feedback or complaint.
+	
+	:param student: Student ID
+	:param feedback_type: Type of feedback (Suggestion, Complaint, General)
+	:param subject: Subject line
+	:param message: Detailed message
+	:param is_anonymous: Whether to submit anonymously
+	:returns: dict with submission status
+	"""
+	if not frappe.db.exists("DocType", "Student Feedback"):
+		return {
+			"success": False,
+			"message": "Feedback system not configured"
+		}
+	
+	feedback = frappe.new_doc("Student Feedback")
+	feedback.student = None if is_anonymous else student
+	feedback.feedback_type = feedback_type
+	feedback.subject = subject
+	feedback.message = message
+	feedback.is_anonymous = is_anonymous
+	feedback.status = "Open"
+	feedback.submission_date = today()
+	feedback.save(ignore_permissions=True)
+	
+	return {
+		"success": True,
+		"feedback": feedback.name,
+		"message": "Feedback submitted successfully"
+	}
+
+
+# Transcripts APIs
+@frappe.whitelist()
+def get_transcript_data(student):
+	"""Get complete academic transcript data.
+	
+	:param student: Student ID
+	:returns: dict with transcript information
+	"""
+	student_doc = frappe.get_doc("Student", student)
+	
+	# Get all program enrollments
+	enrollments = frappe.db.get_list(
+		"Program Enrollment",
+		filters={"student": student, "docstatus": 1},
+		fields=["name", "program", "academic_year", "academic_term", "student_batch_name"],
+		order_by="creation"
+	)
+	
+	transcript_data = {
+		"student": student,
+		"student_name": student_doc.student_name,
+		"student_email": student_doc.student_email_id,
+		"programs": []
+	}
+	
+	for enrollment in enrollments:
+		# Get assessment results for this program
+		results = frappe.db.get_list(
+			"Assessment Result",
+			filters={
+				"student": student,
+				"program": enrollment.program,
+				"docstatus": 1
+			},
+			fields=["course", "assessment_group", "total_score", "maximum_score", "grade", "academic_term"],
+			order_by="course, assessment_group"
+		)
+		
+		# Group by academic term
+		term_results = {}
+		for result in results:
+			term = result.academic_term or "Unknown"
+			if term not in term_results:
+				term_results[term] = []
+			term_results[term].append(result)
+		
+		program_data = {
+			"program": enrollment.program,
+			"academic_year": enrollment.academic_year,
+			"batch": enrollment.student_batch_name,
+			"terms": []
+		}
+		
+		for term, term_courses in term_results.items():
+			term_data = {
+				"term": term,
+				"courses": term_courses,
+				"gpa": calculate_term_gpa(term_courses)
+			}
+			program_data["terms"].append(term_data)
+		
+		transcript_data["programs"].append(program_data)
+	
+	return transcript_data
+
+
+def calculate_term_gpa(courses):
+	"""Calculate GPA for a term's courses.
+	
+	:param courses: List of course results
+	:returns: GPA value
+	"""
+	if not courses:
+		return 0.0
+	
+	total_score = sum(c.get("total_score", 0) for c in courses)
+	total_max = sum(c.get("maximum_score", 100) for c in courses)
+	
+	if total_max == 0:
+		return 0.0
+	
+	percentage = (total_score / total_max) * 100
+	
+	# Convert percentage to GPA (4.0 scale)
+	if percentage >= 90:
+		return 4.0
+	elif percentage >= 80:
+		return 3.5
+	elif percentage >= 70:
+		return 3.0
+	elif percentage >= 60:
+		return 2.5
+	elif percentage >= 50:
+		return 2.0
+	else:
+		return 0.0
+
+
+@frappe.whitelist()
+def request_official_transcript(student, copies=1, delivery_method="Pickup"):
+	"""Request official transcript document.
+	
+	:param student: Student ID
+	:param copies: Number of copies requested
+	:param delivery_method: Pickup or Mail
+	:returns: dict with request status
+	"""
+	if not frappe.db.exists("DocType", "Transcript Request"):
+		return {
+			"success": False,
+			"message": "Transcript request system not configured"
+		}
+	
+	request = frappe.new_doc("Transcript Request")
+	request.student = student
+	request.copies = copies
+	request.delivery_method = delivery_method
+	request.status = "Pending"
+	request.request_date = today()
+	request.save(ignore_permissions=True)
+	
+	return {
+		"success": True,
+		"request": request.name,
+		"message": "Transcript request submitted successfully"
+	}
+
+
+# Course Registration APIs
+@frappe.whitelist()
+def get_available_courses_for_registration(student, program=None, academic_term=None):
+	"""Get courses available for registration.
+	
+	:param student: Student ID
+	:param program: Program name (optional)
+	:param academic_term: Academic term (optional)
+	:returns: list of available courses
+	"""
+	if not program:
+		enrollment = get_current_enrollment(student)
+		if not enrollment:
+			return []
+		program = enrollment.get("program")
+	
+	program_doc = frappe.get_doc("Program", program)
+	
+	# Get already registered courses
+	registered = frappe.db.get_list(
+		"Course Enrollment",
+		filters={"student": student, "program": program},
+		fields=["course"],
+		pluck="course"
+	) if frappe.db.exists("DocType", "Course Enrollment") else []
+	
+	available_courses = []
+	for course in program_doc.courses:
+		if course.course not in registered:
+			course_doc = frappe.get_doc("Course", course.course)
+			available_courses.append({
+				"course": course.course,
+				"course_name": course_doc.course_name,
+				"course_abbr": course_doc.course_abbr if hasattr(course_doc, "course_abbr") else "",
+				"description": course_doc.description if hasattr(course_doc, "description") else ""
+			})
+	
+	return available_courses
+
+
+@frappe.whitelist()
+def register_for_course(student, course, academic_term=None):
+	"""Register student for a course.
+	
+	:param student: Student ID
+	:param course: Course ID
+	:param academic_term: Academic term (optional)
+	:returns: dict with registration status
+	"""
+	enrollment = get_current_enrollment(student)
+	if not enrollment:
+		return {
+			"success": False,
+			"message": "No active enrollment found"
+		}
+	
+	# Check if Course Enrollment doctype exists
+	if not frappe.db.exists("DocType", "Course Enrollment"):
+		return {
+			"success": False,
+			"message": "Course enrollment system not configured"
+		}
+	
+	# Check if already registered
+	existing = frappe.db.exists(
+		"Course Enrollment",
+		{"student": student, "course": course}
+	)
+	
+	if existing:
+		return {
+			"success": False,
+			"message": "Already registered for this course"
+		}
+	
+	# Create enrollment
+	course_enrollment = frappe.new_doc("Course Enrollment")
+	course_enrollment.student = student
+	course_enrollment.course = course
+	course_enrollment.program = enrollment.get("program")
+	course_enrollment.academic_term = academic_term or enrollment.get("academic_term")
+	course_enrollment.enrollment_date = today()
+	course_enrollment.save(ignore_permissions=True)
+	
+	return {
+		"success": True,
+		"enrollment": course_enrollment.name,
+		"message": "Successfully registered for course"
+	}
+
+
+@frappe.whitelist()
+def drop_course(student, course, academic_term=None):
+	"""Drop a course registration.
+	
+	:param student: Student ID
+	:param course: Course ID
+	:param academic_term: Academic term (optional)
+	:returns: dict with drop status
+	"""
+	if not frappe.db.exists("DocType", "Course Enrollment"):
+		return {
+			"success": False,
+			"message": "Course enrollment system not configured"
+		}
+	
+	enrollment = frappe.db.get_value(
+		"Course Enrollment",
+		{"student": student, "course": course},
+		"name"
+	)
+	
+	if not enrollment:
+		return {
+			"success": False,
+			"message": "Not registered for this course"
+		}
+	
+	frappe.delete_doc("Course Enrollment", enrollment, ignore_permissions=True)
+	
+	return {
+		"success": True,
+		"message": "Successfully dropped course"
+	}
+
+
+# Notifications APIs
+@frappe.whitelist()
+def get_student_notifications(student, limit=20):
+	"""Get student notifications.
+	
+	:param student: Student ID
+	:param limit: Maximum number of notifications
+	:returns: list of notifications
+	"""
+	# Get student's email
+	email = frappe.db.get_value("Student", student, "student_email_id")
+	
+	if not email:
+		return []
+	
+	# Get notifications from Notification Log
+	notifications = frappe.db.get_list(
+		"Notification Log",
+		filters={"for_user": email},
+		fields=["name", "subject", "document_type", "document_name", "read", "creation"],
+		order_by="creation desc",
+		limit=limit
+	)
+	
+	return notifications
+
+
+@frappe.whitelist()
+def mark_notification_read(notification_id):
+	"""Mark notification as read.
+	
+	:param notification_id: Notification ID
+	:returns: dict with status
+	"""
+	frappe.db.set_value("Notification Log", notification_id, "read", 1)
+	
+	return {
+		"success": True,
+		"message": "Notification marked as read"
+	}
+
+
+@frappe.whitelist()
+def get_unread_notification_count(student):
+	"""Get count of unread notifications.
+	
+	:param student: Student ID
+	:returns: int count
+	"""
+	email = frappe.db.get_value("Student", student, "student_email_id")
+	
+	if not email:
+		return 0
+	
+	count = frappe.db.count(
+		"Notification Log",
+		filters={"for_user": email, "read": 0}
+	)
+	
+	return count
+
+
+# Profile APIs
+@frappe.whitelist()
+def update_student_contact_info(student, email=None, phone=None, address=None):
+	"""Update student contact information.
+	
+	:param student: Student ID
+	:param email: New email address
+	:param phone: New phone number
+	:param address: New address
+	:returns: dict with update status
+	"""
+	student_doc = frappe.get_doc("Student", student)
+	
+	if email:
+		student_doc.student_email_id = email
+	if phone:
+		student_doc.student_mobile_number = phone
+	if address:
+		student_doc.address = address
+	
+	student_doc.save(ignore_permissions=True)
+	
+	return {
+		"success": True,
+		"message": "Contact information updated successfully"
+	}
+
+
+@frappe.whitelist()
+def update_student_photo(student, photo):
+	"""Update student profile photo.
+	
+	:param student: Student ID
+	:param photo: Photo file path
+	:returns: dict with update status
+	"""
+	frappe.db.set_value("Student", student, "image", photo)
+	
+	return {
+		"success": True,
+		"message": "Profile photo updated successfully"
+	}
+
+
+# Dashboard Stats API
+@frappe.whitelist()
+def get_student_dashboard_stats(student):
+	"""Get dashboard statistics for a student.
+	
+	:param student: Student ID
+	:returns: dict with dashboard stats
+	"""
+	enrollment = get_current_enrollment(student)
+	
+	# Get attendance stats
+	if enrollment:
+		attendance = frappe.db.get_list(
+			"Student Attendance",
+			filters={"student": student, "docstatus": 1},
+			fields=["status"]
+		)
+		total_classes = len(attendance)
+		present_classes = len([a for a in attendance if a.status == "Present"])
+		attendance_percentage = round(present_classes / total_classes * 100, 1) if total_classes > 0 else 0
+	else:
+		attendance_percentage = 0
+	
+	# Get fee balance
+	outstanding_invoices = frappe.db.get_list(
+		"Sales Invoice",
+		filters={
+			"student": student,
+			"status": ["in", ["Unpaid", "Overdue", "Partly Paid"]],
+			"docstatus": 1
+		},
+		fields=["outstanding_amount", "currency"]
+	)
+	fee_balance = sum(inv.outstanding_amount for inv in outstanding_invoices)
+	currency = outstanding_invoices[0].currency if outstanding_invoices else "KES"
+	currency_symbol = get_currency_symbol(currency)
+	
+	# Get GPA (simplified calculation)
+	results = frappe.db.get_list(
+		"Assessment Result",
+		filters={"student": student, "docstatus": 1},
+		fields=["total_score", "maximum_score"]
+	)
+	if results:
+		total_score = sum(r.total_score for r in results)
+		total_max = sum(r.maximum_score for r in results)
+		percentage = (total_score / total_max * 100) if total_max > 0 else 0
+		# Convert to 4.0 scale
+		if percentage >= 90:
+			gpa = 4.0
+		elif percentage >= 80:
+			gpa = 3.5
+		elif percentage >= 70:
+			gpa = 3.0
+		elif percentage >= 60:
+			gpa = 2.5
+		elif percentage >= 50:
+			gpa = 2.0
+		else:
+			gpa = 0.0
+	else:
+		gpa = 0.0
+	
+	# Get unread notifications count
+	notification_count = get_unread_notification_count(student)
+	
+	return {
+		"gpa": gpa,
+		"attendance_percentage": attendance_percentage,
+		"fee_balance": f"{currency_symbol} {fee_balance:,.2f}",
+		"unread_notifications": notification_count,
+		"program": enrollment.get("program") if enrollment else None,
+		"academic_year": enrollment.get("academic_year") if enrollment else None,
+		"academic_term": enrollment.get("academic_term") if enrollment else None
+	}
+
+
+# Upcoming Classes API
+@frappe.whitelist()
+def get_upcoming_classes(student, limit=5):
+	"""Get upcoming classes for a student.
+	
+	:param student: Student ID
+	:param limit: Maximum number of classes to return
+	:returns: list of upcoming classes
+	"""
+	enrollment = get_current_enrollment(student)
+	if not enrollment:
+		return []
+	
+	student_groups = get_student_groups(student, enrollment.get("program"))
+	student_group_names = [sg.get("label") for sg in student_groups]
+	
+	schedule = frappe.db.get_list(
+		"Course Schedule",
+		filters={
+			"program": enrollment.get("program"),
+			"student_group": ["in", student_group_names],
+			"schedule_date": [">=", today()]
+		},
+		fields=["schedule_date", "room", "course", "from_time", "to_time", "instructor", "title", "name"],
+		order_by="schedule_date asc, from_time asc",
+		limit=limit
+	)
+	
+	return schedule
