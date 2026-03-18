@@ -153,6 +153,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { createResource, Button, Badge, Spinner } from 'frappe-ui'
 import { studentStore } from '@/stores/student'
+import { parseCurrencyValue, formatCurrency, formatDate } from '@/utils'
 import { Receipt } from 'lucide-vue-next'
 
 const { getStudentInfo } = studentStore()
@@ -169,7 +170,7 @@ const summaryStats = computed(() => {
   let overdueAmount = 0
 
   invoices.value.forEach((inv) => {
-    const amount = parseFloat(inv.amount?.replace(/[^0-9.-]+/g, '') || 0)
+    const amount = parseCurrencyValue(inv.amount)
     
     if (inv.status === 'Paid') {
       amountPaid += amount
@@ -201,19 +202,6 @@ const invoicesResource = createResource({
     invoicesLoading.value = false
   }
 })
-
-const formatCurrency = (amount) => {
-  return 'KES ' + amount.toLocaleString('en-US', { minimumFractionDigits: 2 })
-}
-
-const formatDate = (date) => {
-  if (!date) return '-'
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  })
-}
 
 const getStatusColor = (status) => {
   const colors = {

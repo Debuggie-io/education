@@ -54,7 +54,7 @@
               {{ notification.subject }}
             </p>
             <p class="text-sm text-gray-500">
-              {{ notification.document_type }} • {{ formatTime(notification.creation) }}
+              {{ notification.document_type }} • {{ getRelativeTime(notification.creation) }}
             </p>
           </div>
           <div class="flex items-center space-x-2">
@@ -92,7 +92,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { createResource, Button, Badge, Spinner } from 'frappe-ui'
 import { studentStore } from '@/stores/student'
-import { createToast } from '@/utils'
+import { createToast, getRelativeTime } from '@/utils'
 import {
   Bell,
   FileText,
@@ -150,33 +150,6 @@ const getNotificationIcon = (doctype) => {
     'Comment': MessageSquare
   }
   return icons[doctype] || FileText
-}
-
-const formatTime = (datetime) => {
-  if (!datetime) return ''
-  const date = new Date(datetime)
-  const now = new Date()
-  const diff = now - date
-  
-  // Less than 1 hour
-  if (diff < 3600000) {
-    const minutes = Math.floor(diff / 60000)
-    return `${minutes} minutes ago`
-  }
-  
-  // Less than 24 hours
-  if (diff < 86400000) {
-    const hours = Math.floor(diff / 3600000)
-    return `${hours} hours ago`
-  }
-  
-  // Less than 7 days
-  if (diff < 604800000) {
-    const days = Math.floor(diff / 86400000)
-    return `${days} days ago`
-  }
-  
-  return date.toLocaleDateString()
 }
 
 const handleNotificationClick = (notification) => {

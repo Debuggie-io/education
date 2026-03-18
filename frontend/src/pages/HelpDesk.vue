@@ -251,10 +251,13 @@ const faqs = reactive([
 ])
 
 const handleQuickHelp = (item) => {
-  newTicket.category = item.action === 'password' ? 'Account'
-    : item.action === 'payment' ? 'Financial'
-    : item.action === 'course' ? 'Academic'
-    : 'Technical'
+  const actionToCategoryMap = {
+    'password': 'Account',
+    'payment': 'Financial',
+    'course': 'Academic',
+    'technical': 'Technical'
+  }
+  newTicket.category = actionToCategoryMap[item.action] || 'Technical'
   showNewTicketDialog.value = true
 }
 

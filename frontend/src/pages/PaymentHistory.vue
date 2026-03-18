@@ -122,6 +122,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { createResource, Button, Spinner, FormControl } from 'frappe-ui'
 import { studentStore } from '@/stores/student'
+import { parseCurrencyValue, formatCurrency, formatDate } from '@/utils'
 import { CreditCard, Smartphone, Building, DollarSign } from 'lucide-vue-next'
 
 const { getStudentInfo } = studentStore()
@@ -153,7 +154,7 @@ const filteredPayments = computed(() => {
 
 const totalPaid = computed(() => {
   return payments.value.reduce((sum, p) => {
-    const amount = parseFloat(p.amount?.replace(/[^0-9.-]+/g, '') || 0)
+    const amount = parseCurrencyValue(p.amount)
     return sum + amount
   }, 0)
 })
@@ -191,19 +192,6 @@ const paymentsResource = createResource({
     paymentsLoading.value = false
   }
 })
-
-const formatCurrency = (amount) => {
-  return 'KES ' + amount.toLocaleString('en-US', { minimumFractionDigits: 2 })
-}
-
-const formatDate = (date) => {
-  if (!date || date === '-') return '-'
-  return new Date(date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  })
-}
 
 const getPaymentMethodIcon = (method) => {
   const icons = {

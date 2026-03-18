@@ -79,11 +79,7 @@
             </div>
           </div>
 
-          <div class="mt-4 pt-4 border-t flex items-center justify-between">
-            <div class="text-sm">
-              <span class="text-gray-500">Progress:</span>
-              <span class="font-medium text-gray-900 ml-1">{{ course.progress || 0 }}%</span>
-            </div>
+          <div class="mt-4 pt-4 border-t flex items-center justify-end">
             <Button
               variant="subtle"
               size="sm"
@@ -123,8 +119,7 @@ const coursesResource = createResource({
       courseDetails.push({
         course: courseId,
         course_name: courseId,
-        status: 'Active',
-        progress: Math.floor(Math.random() * 100) // Placeholder
+        status: 'Active'
       })
     }
     courses.value = courseDetails

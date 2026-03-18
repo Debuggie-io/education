@@ -83,3 +83,78 @@ export function groupBy(obj, fn) {
     return acc
   }, {})
 }
+
+// Time constants in milliseconds
+export const TIME_CONSTANTS = {
+  MILLISECONDS_PER_MINUTE: 60000,
+  MILLISECONDS_PER_HOUR: 3600000,
+  MILLISECONDS_PER_DAY: 86400000,
+  MILLISECONDS_PER_WEEK: 604800000,
+}
+
+/**
+ * Parse currency string and extract numeric value
+ * @param {string} currencyString - Currency string like "KES 1,234.56"
+ * @returns {number} - Numeric value
+ */
+export function parseCurrencyValue(currencyString) {
+  if (!currencyString) return 0
+  return parseFloat(currencyString.replace(/[^0-9.-]+/g, '') || 0)
+}
+
+/**
+ * Format a number as currency
+ * @param {number} amount - Amount to format
+ * @param {string} currency - Currency code (default: 'KES')
+ * @returns {string} - Formatted currency string
+ */
+export function formatCurrency(amount, currency = 'KES') {
+  return `${currency} ${amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
+}
+
+/**
+ * Format a date string for display
+ * @param {string|Date} date - Date to format
+ * @param {object} options - Intl.DateTimeFormat options
+ * @returns {string} - Formatted date string
+ */
+export function formatDate(date, options = {}) {
+  if (!date || date === '-') return '-'
+  const defaultOptions = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  }
+  return new Date(date).toLocaleDateString('en-US', { ...defaultOptions, ...options })
+}
+
+/**
+ * Get relative time string (e.g., "5 minutes ago")
+ * @param {string|Date} datetime - Date/time to format
+ * @returns {string} - Relative time string
+ */
+export function getRelativeTime(datetime) {
+  if (!datetime) return ''
+  const date = new Date(datetime)
+  const now = new Date()
+  const diff = now - date
+
+  const { MILLISECONDS_PER_MINUTE, MILLISECONDS_PER_HOUR, MILLISECONDS_PER_DAY, MILLISECONDS_PER_WEEK } = TIME_CONSTANTS
+
+  if (diff < MILLISECONDS_PER_HOUR) {
+    const minutes = Math.floor(diff / MILLISECONDS_PER_MINUTE)
+    return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`
+  }
+
+  if (diff < MILLISECONDS_PER_DAY) {
+    const hours = Math.floor(diff / MILLISECONDS_PER_HOUR)
+    return `${hours} hour${hours !== 1 ? 's' : ''} ago`
+  }
+
+  if (diff < MILLISECONDS_PER_WEEK) {
+    const days = Math.floor(diff / MILLISECONDS_PER_DAY)
+    return `${days} day${days !== 1 ? 's' : ''} ago`
+  }
+
+  return formatDate(date)
+}
