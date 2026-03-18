@@ -105,9 +105,29 @@
    "group": "Assessment",
    "link_doctype": "Assessment Result",
    "link_fieldname": "academic_term"
+  },
+  {
+   "group": "Timetabling",
+   "link_doctype": "Semester Course Offering",
+   "link_fieldname": "academic_term"
+  },
+  {
+   "group": "Timetabling",
+   "link_doctype": "Timetable",
+   "link_fieldname": "academic_term"
+  },
+  {
+   "group": "Timetabling",
+   "link_doctype": "Timetable Entry",
+   "link_fieldname": "academic_term"
+  },
+  {
+   "group": "Timetabling",
+   "link_doctype": "Instructor Availability",
+   "link_fieldname": "academic_term"
   }
  ],
- "modified": "2024-01-25 11:11:16.432849",
+ "modified": "2026-03-14 16:13:26.071630",
  "modified_by": "Administrator",
  "module": "Education",
  "name": "Academic Term",
@@ -128,6 +148,7 @@
   }
  ],
  "quick_entry": 1,
+ "row_format": "Dynamic",
  "sort_field": "name",
  "sort_order": "DESC",
  "states": [],

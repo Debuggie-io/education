@@ -1,0 +1,93 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-03-14 10:23:18.943859",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "course",
+  "course_code",
+  "credit_hours",
+  "is_lab_course",
+  "instructor",
+  "expected_students",
+  "program",
+  "year_of_study"
+ ],
+ "fields": [
+  {
+   "fieldname": "course",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Course",
+   "options": "Course",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "course.course_code",
+   "fieldname": "course_code",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Course Code",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "course.credit_hours",
+   "fieldname": "credit_hours",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Credit Hours",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fetch_from": "course.is_lab_course",
+   "fieldname": "is_lab_course",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Lab Course",
+   "read_only": 1
+  },
+  {
+   "fieldname": "instructor",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Instructor",
+   "options": "Instructor"
+  },
+  {
+   "fieldname": "expected_students",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Expected Students"
+  },
+  {
+   "fieldname": "program",
+   "fieldtype": "Link",
+   "label": "Program",
+   "options": "Program"
+  },
+  {
+   "fieldname": "year_of_study",
+   "fieldtype": "Select",
+   "label": "Year of Study",
+   "options": "\n1\n2\n3\n4\n5"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-03-14 10:23:18.943859",
+ "modified_by": "Administrator",
+ "module": "Education",
+ "name": "Semester Course Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

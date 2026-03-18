@@ -1,14 +1,15 @@
 {
  "app": "education",
  "charts": [],
- "content": "[]",
+ "content": "[{\"id\":\"7TWsLiRUNh\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Available Rooms\",\"col\":4}},{\"id\":\"12_Zd4CbFZ\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Pending Residence Applications\",\"col\":4}},{\"id\":\"f2UpRMkfl4\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Occupied Rooms\",\"col\":4}},{\"id\":\"header_hostels\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Hostels &amp; Rooms</b></span>\",\"col\":12}},{\"id\":\"shortcut_1\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Hostel\",\"col\":3}},{\"id\":\"shortcut_2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Hostel Room\",\"col\":3}},{\"id\":\"shortcut_3\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Student Residence\",\"col\":3}},{\"id\":\"shortcut_4\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Room Booking Application\",\"col\":3}},{\"id\":\"spacer_1\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"header_offcampus\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Off-Campus Housing</b></span>\",\"col\":12}},{\"id\":\"shortcut_5\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Off Campus Registration\",\"col\":3}},{\"id\":\"shortcut_6\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Landlord\",\"col\":3}},{\"id\":\"shortcut_7\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Landlord Property\",\"col\":3}},{\"id\":\"spacer_2\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"header_admin\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Administration</b></span>\",\"col\":12}},{\"id\":\"shortcut_8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Residence Application Period\",\"col\":3}}]",
  "creation": "2026-03-11 14:20:34.947828",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
+ "for_user": "",
  "hide_custom": 0,
  "icon": "home",
- "idx": 0,
+ "idx": 2,
  "indicator_color": "green",
  "is_hidden": 0,
  "label": "Student Residence",
@@ -17,94 +18,50 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Hostels",
+   "label": "Hostel Occupancy Report",
    "link_count": 0,
-   "link_to": "Hostel",
-   "link_type": "DocType",
+   "link_to": "Hostel Occupancy Report",
+   "link_type": "Report",
    "onboard": 0,
+   "report_ref_doctype": "Hostel",
    "type": "Link"
   },
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Rooms",
+   "label": "Room Vacancy Report",
    "link_count": 0,
-   "link_to": "Hostel Room",
-   "link_type": "DocType",
+   "link_to": "Room Vacancy Report",
+   "link_type": "Report",
    "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Student Residence",
-   "link_count": 0,
-   "link_to": "Student Residence",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Booking Applications",
-   "link_count": 0,
-   "link_to": "Room Booking Application",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Application Periods",
-   "link_count": 0,
-   "link_to": "Residence Application Period",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Landlords",
-   "link_count": 0,
-   "link_to": "Landlord",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Properties",
-   "link_count": 0,
-   "link_to": "Landlord Property",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Off Campus Registrations",
-   "link_count": 0,
-   "link_to": "Off Campus Registration",
-   "link_type": "DocType",
-   "onboard": 0,
+   "report_ref_doctype": "Hostel Room",
    "type": "Link"
   }
  ],
- "modified": "2026-03-11 22:55:56.406170",
- "modified_by": "Administrator",
+ "modified": "2026-03-16 14:56:18.895304",
+ "modified_by": "vampmid03@gmail.com",
  "module": "Student Residence",
  "name": "Student Residence",
- "number_cards": [],
+ "number_cards": [
+  {
+   "label": "Available Rooms",
+   "number_card_name": "Available Rooms"
+  },
+  {
+   "label": "Pending Residence Applications",
+   "number_card_name": "Pending Residence Applications"
+  },
+  {
+   "label": "Occupied Rooms",
+   "number_card_name": "Occupied Rooms"
+  }
+ ],
  "owner": "Administrator",
+ "parent_page": "Education",
  "public": 1,
  "quick_lists": [],
  "roles": [],
- "sequence_id": 0.0,
+ "sequence_id": 15.0,
  "shortcuts": [
   {
    "doc_view": "",
@@ -132,26 +89,26 @@
   },
   {
    "doc_view": "",
-   "label": "Application Periods",
-   "link_to": "Residence Application Period",
+   "label": "Off Campus Registration",
+   "link_to": "Off Campus Registration",
    "type": "DocType"
   },
   {
    "doc_view": "",
-   "label": "Landlords",
+   "label": "Landlord",
    "link_to": "Landlord",
    "type": "DocType"
   },
   {
    "doc_view": "",
-   "label": "Properties",
+   "label": "Landlord Property",
    "link_to": "Landlord Property",
    "type": "DocType"
   },
   {
    "doc_view": "",
-   "label": "Off Campus Registration",
-   "link_to": "Off Campus Registration",
+   "label": "Residence Application Period",
+   "link_to": "Residence Application Period",
    "type": "DocType"
   }
  ],

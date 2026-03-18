@@ -468,36 +468,54 @@ def update_email_group(doctype, name):
 				email_list.append(email)
 	add_subscribers(name, email_list)
 
-
 @frappe.whitelist()
 def get_current_enrollment(student, academic_year=None):
-	# If academic_year is not passed, use today's date
-	compare_date = getdate(academic_year) if academic_year else getdate(today())
+        # If academic_year is not passed, use today's date
+        compare_date = getdate(academic_year) if academic_year else getdate(today())
 
-	program_enrollment_list = frappe.db.sql(
-		"""
-		SELECT
-			pe.name AS program_enrollment, pe.student_name, pe.program, pe.student_batch_name AS student_batch,
-			pe.student_category, pe.academic_term, pe.academic_year
-		FROM
-			`tabProgram Enrollment` pe
-		JOIN
-			`tabAcademic Year` ay ON pe.academic_year = ay.name
-		WHERE
-			pe.student = %s
-			AND ay.year_end_date >= %s
-		ORDER BY
-			pe.creation
-		""",
-		(student, compare_date),
-		as_dict=1,
-	)
+        program_enrollment_list = frappe.db.sql(
+                """
+                SELECT
+                        pe.name AS program_enrollment, pe.student_name, pe.program, pe.student_batch_name AS student_batch,
+                        pe.student_category, pe.academic_term, pe.academic_year
+                FROM
+                        `tabProgram Enrollment` pe
+                JOIN
+                        `tabAcademic Year` ay ON pe.academic_year = ay.name
+                WHERE
+                        pe.student = %s
+                        AND ay.year_end_date >= %s
+                ORDER BY
+                        pe.creation DESC
+                """,
+                (student, compare_date),
+                as_dict=1,
+        )
 
-	if program_enrollment_list:
-		return program_enrollment_list[0]
-	else:
-		return None
+        # Fallback: If no current enrollment found, get the most recent submitted one
+        if not program_enrollment_list:
+                program_enrollment_list = frappe.db.sql(
+                        """
+                        SELECT
+                                pe.name AS program_enrollment, pe.student_name, pe.program, pe.student_batch_name AS student_batch,
+                                pe.student_category, pe.academic_term, pe.academic_year
+                        FROM
+                                `tabProgram Enrollment` pe
+                        WHERE
+                                pe.student = %s
+                                AND pe.docstatus = 1
+                        ORDER BY
+                                pe.creation DESC
+                        LIMIT 1
+                        """,
+                        (student,),
+                        as_dict=1,
+                )
 
+        if program_enrollment_list:
+                return program_enrollment_list[0]
+        else:
+                return None
 
 @frappe.whitelist()
 def get_instructors(student_group):
@@ -525,11 +543,22 @@ def get_student_info():
 	email = frappe.session.user
 	if email == "Administrator":
 		return
-	student_info = frappe.db.get_list(
+	
+	# Use ignore_permissions to bypass role restrictions
+	student_list = frappe.db.get_list(
 		"Student",
 		fields=["*"],
 		filters={"user": email},
-	)[0]
+		ignore_permissions=True
+	)
+	
+	if not student_list:
+		frappe.throw(
+			f"No student record found linked to your account ({email}). Please contact the administrator.",
+			title="Student Record Not Found"
+		)
+	
+	student_info = student_list[0]
 
 	current_program = get_current_enrollment(student_info.name)
 	if current_program:

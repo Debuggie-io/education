@@ -1,0 +1,49 @@
+{
+ "app": "education",
+ "charts": [],
+ "content": "[{\"id\": \"redir_assignments\", \"type\": \"spacer\", \"data\": {\"col\": 12}}]",
+ "creation": "2026-03-12 19:28:57.817599",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "hide_custom": 0,
+ "icon": "assign",
+ "idx": 0,
+ "indicator_color": "green",
+ "is_hidden": 0,
+ "label": "Assignments",
+ "link_type": "DocType",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Assignments",
+   "link_count": 0,
+   "link_to": "Work Study Assignment",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-03-12 19:28:57.817599",
+ "modified_by": "Administrator",
+ "module": "Work Study",
+ "name": "Assignments",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "Work Study",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 0.0,
+ "shortcuts": [
+  {
+   "doc_view": "List",
+   "label": "Work Study Assignment",
+   "link_to": "Work Study Assignment",
+   "type": "DocType"
+  }
+ ],
+ "title": "Assignments",
+ "type": "Workspace"
+}

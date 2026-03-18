@@ -1,0 +1,255 @@
+{
+  "name": "Work Study Timesheet",
+  "module": "Work Study",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "naming_rule": "Expression",
+  "autoname": "WSTS-.YYYY.-.#####",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "work_study_assignment",
+      "fieldtype": "Link",
+      "label": "Work Study Assignment",
+      "options": "Work Study Assignment",
+      "reqd": 1,
+      "in_list_view": 1,
+      "in_standard_filter": 1
+    },
+    {
+      "fieldname": "student",
+      "fieldtype": "Link",
+      "label": "Student",
+      "options": "Student",
+      "fetch_from": "work_study_assignment.student",
+      "read_only": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "student_name",
+      "fieldtype": "Data",
+      "label": "Student Name",
+      "fetch_from": "student.student_name",
+      "read_only": 1
+    },
+    {
+      "fieldname": "employee",
+      "fieldtype": "Link",
+      "label": "Employee",
+      "options": "Employee",
+      "fetch_from": "work_study_assignment.employee",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "work_study_position",
+      "fieldtype": "Link",
+      "label": "Work Study Position",
+      "options": "Work Study Position",
+      "fetch_from": "work_study_assignment.work_study_position",
+      "read_only": 1,
+      "in_standard_filter": 1
+    },
+    {
+      "fieldname": "department",
+      "fieldtype": "Link",
+      "label": "Department",
+      "options": "Department",
+      "fetch_from": "work_study_position.department",
+      "read_only": 1
+    },
+    {
+      "fieldname": "supervisor",
+      "fieldtype": "Link",
+      "label": "Supervisor",
+      "options": "Employee",
+      "fetch_from": "work_study_assignment.supervisor",
+      "read_only": 1
+    },
+    {
+      "fieldname": "section_period",
+      "fieldtype": "Section Break",
+      "label": "Timesheet Period"
+    },
+    {
+      "fieldname": "week_start_date",
+      "fieldtype": "Date",
+      "label": "Week Start Date",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "week_end_date",
+      "fieldtype": "Date",
+      "label": "Week End Date",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_2",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Draft\nPending Approval\nApproved\nRejected\nPaid",
+      "default": "Draft",
+      "in_list_view": 1,
+      "in_standard_filter": 1,
+      "read_only": 1
+    },
+    {
+      "fieldname": "section_time_logs",
+      "fieldtype": "Section Break",
+      "label": "Time Logs"
+    },
+    {
+      "fieldname": "time_logs",
+      "fieldtype": "Table",
+      "label": "Time Logs",
+      "options": "Work Study Time Log",
+      "reqd": 1
+    },
+    {
+      "fieldname": "section_summary",
+      "fieldtype": "Section Break",
+      "label": "Summary"
+    },
+    {
+      "fieldname": "total_hours",
+      "fieldtype": "Float",
+      "label": "Total Hours",
+      "read_only": 1,
+      "precision": 2,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "hourly_rate",
+      "fieldtype": "Currency",
+      "label": "Hourly Rate",
+      "fetch_from": "work_study_assignment.hourly_rate",
+      "read_only": 1
+    },
+    {
+      "fieldname": "total_amount",
+      "fieldtype": "Currency",
+      "label": "Total Amount",
+      "read_only": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "column_break_3",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "max_hours_per_week",
+      "fieldtype": "Float",
+      "label": "Max Hours Per Week",
+      "fetch_from": "work_study_assignment.max_hours_per_week",
+      "read_only": 1
+    },
+    {
+      "fieldname": "hours_remaining",
+      "fieldtype": "Float",
+      "label": "Hours Remaining This Week",
+      "read_only": 1,
+      "precision": 2
+    },
+    {
+      "fieldname": "section_approval",
+      "fieldtype": "Section Break",
+      "label": "Approval"
+    },
+    {
+      "fieldname": "approved_by",
+      "fieldtype": "Link",
+      "label": "Approved By",
+      "options": "User",
+      "read_only": 1
+    },
+    {
+      "fieldname": "approval_date",
+      "fieldtype": "Date",
+      "label": "Approval Date",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_4",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "approval_comments",
+      "fieldtype": "Small Text",
+      "label": "Approval Comments"
+    },
+    {
+      "fieldname": "rejection_reason",
+      "fieldtype": "Small Text",
+      "label": "Rejection Reason",
+      "depends_on": "eval:doc.status=='Rejected'"
+    },
+    {
+      "fieldname": "section_payroll",
+      "fieldtype": "Section Break",
+      "label": "Payroll Integration",
+      "depends_on": "eval:doc.status=='Paid'"
+    },
+    {
+      "fieldname": "salary_slip",
+      "fieldtype": "Link",
+      "label": "Salary Slip",
+      "options": "Salary Slip",
+      "read_only": 1
+    },
+    {
+      "fieldname": "journal_entry",
+      "fieldtype": "Link",
+      "label": "Wallet Credit Entry",
+      "options": "Journal Entry",
+      "read_only": 1
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1,
+      "cancel": 1
+    },
+    {
+      "role": "HR Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "submit": 1,
+      "cancel": 1
+    },
+    {
+      "role": "HR User",
+      "read": 1,
+      "write": 1,
+      "submit": 1
+    },
+    {
+      "role": "Employee",
+      "read": 1,
+      "write": 1
+    },
+    {
+      "role": "Student",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "if_owner": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC"
+}

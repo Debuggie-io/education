@@ -1,0 +1,25 @@
+{
+ "cards": [
+  {
+   "card": "Sales Orders Count"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "New Signups",
+   "width": "Full"
+  }
+ ],
+ "creation": "2026-03-14 01:53:56.536170",
+ "dashboard_name": "BOOKING",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2026-03-14 01:56:23.222860",
+ "modified_by": "meulewa6028@gmail.com",
+ "module": "Student Residence",
+ "name": "BOOKING",
+ "owner": "meulewa6028@gmail.com"
+}

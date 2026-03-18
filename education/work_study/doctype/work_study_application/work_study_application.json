@@ -1,0 +1,333 @@
+{
+  "name": "Work Study Application",
+  "module": "Work Study",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "naming_rule": "Expression",
+  "autoname": "WSA-.YYYY.-.#####",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "student",
+      "fieldtype": "Link",
+      "label": "Student",
+      "options": "Student",
+      "reqd": 1,
+      "in_list_view": 1,
+      "in_standard_filter": 1
+    },
+    {
+      "fieldname": "student_name",
+      "fieldtype": "Data",
+      "label": "Student Name",
+      "fetch_from": "student.student_name",
+      "read_only": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "student_email",
+      "fieldtype": "Data",
+      "label": "Student Email",
+      "fetch_from": "student.student_email_id",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "work_study_position",
+      "fieldtype": "Link",
+      "label": "Position Applied For",
+      "options": "Work Study Position",
+      "reqd": 1,
+      "in_list_view": 1,
+      "in_standard_filter": 1
+    },
+    {
+      "fieldname": "department",
+      "fieldtype": "Link",
+      "label": "Department",
+      "options": "Department",
+      "fetch_from": "work_study_position.department",
+      "read_only": 1
+    },
+    {
+      "fieldname": "application_date",
+      "fieldtype": "Date",
+      "label": "Application Date",
+      "default": "Today",
+      "read_only": 1
+    },
+    {
+      "fieldname": "section_eligibility",
+      "fieldtype": "Section Break",
+      "label": "Eligibility Assessment"
+    },
+    {
+      "fieldname": "current_program",
+      "fieldtype": "Link",
+      "label": "Current Program",
+      "options": "Program",
+      "read_only": 1
+    },
+    {
+      "fieldname": "year_of_study",
+      "fieldtype": "Int",
+      "label": "Year of Study",
+      "read_only": 1
+    },
+    {
+      "fieldname": "current_gpa",
+      "fieldtype": "Float",
+      "label": "Current GPA",
+      "precision": 2,
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_2",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "outstanding_balance",
+      "fieldtype": "Currency",
+      "label": "Outstanding Balance",
+      "read_only": 1
+    },
+    {
+      "fieldname": "total_billed",
+      "fieldtype": "Currency",
+      "label": "Total Billed",
+      "read_only": 1
+    },
+    {
+      "fieldname": "financial_need_score",
+      "fieldtype": "Float",
+      "label": "Financial Need Score",
+      "precision": 2,
+      "read_only": 1,
+      "description": "0-100 based on outstanding balance ratio"
+    },
+    {
+      "fieldname": "section_screening",
+      "fieldtype": "Section Break",
+      "label": "Automated Screening Results"
+    },
+    {
+      "fieldname": "gpa_eligible",
+      "fieldtype": "Check",
+      "label": "GPA Eligible",
+      "read_only": 1
+    },
+    {
+      "fieldname": "financial_need_eligible",
+      "fieldtype": "Check",
+      "label": "Financial Need Eligible",
+      "read_only": 1
+    },
+    {
+      "fieldname": "program_eligible",
+      "fieldtype": "Check",
+      "label": "Program Eligible",
+      "read_only": 1
+    },
+    {
+      "fieldname": "year_eligible",
+      "fieldtype": "Check",
+      "label": "Year of Study Eligible",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_3",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "is_eligible",
+      "fieldtype": "Check",
+      "label": "Meets All Criteria",
+      "read_only": 1
+    },
+    {
+      "fieldname": "screening_notes",
+      "fieldtype": "Small Text",
+      "label": "Screening Notes",
+      "read_only": 1
+    },
+    {
+      "fieldname": "section_application",
+      "fieldtype": "Section Break",
+      "label": "Application Details"
+    },
+    {
+      "fieldname": "cover_letter",
+      "fieldtype": "Text Editor",
+      "label": "Cover Letter / Statement of Interest",
+      "reqd": 1
+    },
+    {
+      "fieldname": "relevant_experience",
+      "fieldtype": "Text Editor",
+      "label": "Relevant Experience"
+    },
+    {
+      "fieldname": "available_hours",
+      "fieldtype": "Int",
+      "label": "Available Hours Per Week",
+      "reqd": 1,
+      "default": 10
+    },
+    {
+      "fieldname": "preferred_schedule",
+      "fieldtype": "Small Text",
+      "label": "Preferred Work Schedule"
+    },
+    {
+      "fieldname": "section_status",
+      "fieldtype": "Section Break",
+      "label": "Status & Workflow"
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Draft\nPending Screening\nScreening Failed\nPending HOD Approval\nPending Dean Approval\nApproved\nRejected\nAppeal Submitted\nAppeal Under Review\nAppeal Approved\nAppeal Rejected\nWithdrawn",
+      "default": "Draft",
+      "in_list_view": 1,
+      "in_standard_filter": 1,
+      "read_only": 1
+    },
+    {
+      "fieldname": "workflow_state",
+      "fieldtype": "Link",
+      "label": "Workflow State",
+      "options": "Workflow State",
+      "hidden": 1
+    },
+    {
+      "fieldname": "column_break_4",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "rejection_reason",
+      "fieldtype": "Small Text",
+      "label": "Rejection Reason",
+      "depends_on": "eval:doc.status=='Rejected' || doc.status=='Screening Failed'"
+    },
+    {
+      "fieldname": "section_approvals",
+      "fieldtype": "Section Break",
+      "label": "Approvals"
+    },
+    {
+      "fieldname": "hod_approved",
+      "fieldtype": "Check",
+      "label": "HOD Approved",
+      "read_only": 1
+    },
+    {
+      "fieldname": "hod_approved_by",
+      "fieldtype": "Link",
+      "label": "HOD Approved By",
+      "options": "User",
+      "read_only": 1
+    },
+    {
+      "fieldname": "hod_approval_date",
+      "fieldtype": "Date",
+      "label": "HOD Approval Date",
+      "read_only": 1
+    },
+    {
+      "fieldname": "hod_comments",
+      "fieldtype": "Small Text",
+      "label": "HOD Comments"
+    },
+    {
+      "fieldname": "column_break_5",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "dean_approved",
+      "fieldtype": "Check",
+      "label": "Dean Approved",
+      "read_only": 1
+    },
+    {
+      "fieldname": "dean_approved_by",
+      "fieldtype": "Link",
+      "label": "Dean Approved By",
+      "options": "User",
+      "read_only": 1
+    },
+    {
+      "fieldname": "dean_approval_date",
+      "fieldtype": "Date",
+      "label": "Dean Approval Date",
+      "read_only": 1
+    },
+    {
+      "fieldname": "dean_comments",
+      "fieldtype": "Small Text",
+      "label": "Dean Comments"
+    },
+    {
+      "fieldname": "section_assignment",
+      "fieldtype": "Section Break",
+      "label": "Assignment",
+      "depends_on": "eval:doc.status=='Approved'"
+    },
+    {
+      "fieldname": "work_study_assignment",
+      "fieldtype": "Link",
+      "label": "Work Study Assignment",
+      "options": "Work Study Assignment",
+      "read_only": 1
+    },
+    {
+      "fieldname": "employee_created",
+      "fieldtype": "Link",
+      "label": "Employee Record",
+      "options": "Employee",
+      "read_only": 1
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1,
+      "cancel": 1
+    },
+    {
+      "role": "HR Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "submit": 1,
+      "cancel": 1
+    },
+    {
+      "role": "HR User",
+      "read": 1,
+      "write": 1
+    },
+    {
+      "role": "Employee",
+      "read": 1,
+      "write": 1
+    },
+    {
+      "role": "Student",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "if_owner": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC"
+}

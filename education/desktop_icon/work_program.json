@@ -1,0 +1,31 @@
+{
+ "app": "education",
+ "bg_color": "gray",
+ "creation": "2026-03-16 10:05:46.219884",
+ "docstatus": 0,
+ "doctype": "Desktop Icon",
+ "hidden": 0,
+ "icon_type": "Link",
+ "idx": 0,
+ "label": "Work Program",
+ "link_to": "Work Study",
+ "link_type": "Workspace Sidebar",
+ "modified": "2026-03-16 10:09:39.876450",
+ "modified_by": "Administrator",
+ "name": "Work Program",
+ "owner": "Administrator",
+ "restrict_removal": 0,
+ "roles": [
+  {
+   "role": "Administrator"
+  },
+  {
+   "role": "Student"
+  },
+  {
+   "role": "SAMS HOD"
+  }
+ ],
+ "sidebar": "Work Study",
+ "standard": 1
+}

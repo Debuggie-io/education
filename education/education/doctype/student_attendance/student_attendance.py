@@ -1,141 +1,118 @@
 # Copyright (c) 2015, Frappe Technologies and contributors
 # For license information, please see license.txt
 
-
 import frappe
-from erpnext import get_default_company
-from erpnext.setup.doctype.holiday_list.holiday_list import is_holiday
 from frappe import _
 from frappe.model.document import Document
-from frappe.utils import formatdate, get_link_to_form, getdate
+from frappe.utils import formatdate, get_link_to_form, getdate, nowtime
 
 from education.education.api import get_student_group_students
 
 
 class StudentAttendance(Document):
-	def validate(self):
-		self.validate_mandatory()
-		# self.validate_date()
-		self.set_date()
-		self.set_student_group()
-		self.validate_student()
-		self.validate_duplication()
-		self.validate_is_holiday()
+    def validate(self):
+        self.validate_mandatory()
+        self.set_date()
+        self.set_student_group()
+        self.validate_student()
+        self.validate_duplication()
 
-	def set_date(self):
-		if self.course_schedule:
-			self.date = frappe.db.get_value(
-				"Course Schedule", self.course_schedule, "schedule_date"
-			)
+    def set_date(self):
+        if self.course_schedule:
+            self.date = frappe.db.get_value(
+                "Course Schedule", self.course_schedule, "schedule_date"
+            )
 
-	def validate_mandatory(self):
-		if not (self.student_group or self.course_schedule):
-			frappe.throw(
-				_("{0} or {1} is mandatory").format(
-					frappe.bold("Student Group"), frappe.bold("Course Schedule")
-				),
-				title=_("Mandatory Fields"),
-			)
+    def validate_mandatory(self):
+        """Validate mandatory fields based on attendance type"""
+        attendance_type = getattr(self, 'attendance_type', None) or 'Class'
+        
+        if attendance_type == "Class":
+            # For class attendance, require student_group or course_schedule
+            if not (self.student_group or self.course_schedule):
+                frappe.throw(
+                    _("{0} or {1} is mandatory for Class Attendance").format(
+                        frappe.bold("Student Group"), frappe.bold("Course Schedule")
+                    ),
+                    title=_("Mandatory Fields"),
+                )
+        elif attendance_type == "School Activity":
+            # For activity attendance, require school_activity
+            school_activity = getattr(self, 'school_activity', None)
+            if not school_activity:
+                frappe.throw(
+                    _("{0} is mandatory for School Activity Attendance").format(
+                        frappe.bold("School Activity")
+                    ),
+                    title=_("Mandatory Fields"),
+                )
 
-	def validate_date(self):
-		if not self.leave_application and getdate(self.date) > getdate():
-			frappe.throw(_("Attendance cannot be marked for future dates."))
+    def set_student_group(self):
+        if self.course_schedule:
+            self.student_group = frappe.db.get_value(
+                "Course Schedule", self.course_schedule, "student_group"
+            )
 
-		if self.student_group:
-			academic_year = frappe.db.get_value(
-				"Student Group", self.student_group, "academic_year"
-			)
-			if academic_year:
-				year_start_date, year_end_date = frappe.db.get_value(
-					"Academic Year", academic_year, ["year_start_date", "year_end_date"]
-				)
-				if year_start_date and year_end_date:
-					if getdate(self.date) < getdate(year_start_date) or getdate(self.date) > getdate(
-						year_end_date
-					):
-						frappe.throw(
-							_("Attendance cannot be marked outside of Academic Year {0}").format(
-								academic_year
-							)
-						)
+    def validate_student(self):
+        if self.course_schedule:
+            student_group = frappe.db.get_value(
+                "Course Schedule", self.course_schedule, "student_group"
+            )
+            student_group_students = [
+                d.student for d in get_student_group_students(student_group)
+            ]
+            if student_group and self.student not in student_group_students:
+                student_group_doc = get_link_to_form("Student Group", student_group)
+                frappe.throw(
+                    _("Student {0} is not part of Student Group {1}").format(
+                        frappe.bold(self.student), student_group_doc
+                    )
+                )
 
-	def set_student_group(self):
-		if self.course_schedule:
-			self.student_group = frappe.db.get_value(
-				"Course Schedule", self.course_schedule, "student_group"
-			)
-
-	def validate_student(self):
-		if self.course_schedule:
-			student_group = frappe.db.get_value(
-				"Course Schedule", self.course_schedule, "student_group"
-			)
-		else:
-			student_group = self.student_group
-		student_group_students = [
-			d.student for d in get_student_group_students(student_group)
-		]
-		if student_group and self.student not in student_group_students:
-			student_group_doc = get_link_to_form("Student Group", student_group)
-			frappe.throw(
-				_("Student {0}: {1} does not belong to Student Group {2}").format(
-					frappe.bold(self.student), self.student_name, frappe.bold(student_group_doc)
-				)
-			)
-
-	def validate_duplication(self):
-		"""Check if the Attendance Record is Unique"""
-		attendance_record = None
-		if self.course_schedule:
-			attendance_record = frappe.db.exists(
-				"Student Attendance",
-				{
-					"student": self.student,
-					"course_schedule": self.course_schedule,
-					"docstatus": ("!=", 2),
-					"name": ("!=", self.name),
-				},
-			)
-		else:
-			attendance_record = frappe.db.exists(
-				"Student Attendance",
-				{
-					"student": self.student,
-					"student_group": self.student_group,
-					"date": self.date,
-					"docstatus": ("!=", 2),
-					"name": ("!=", self.name),
-				},
-			)
-
-		if attendance_record:
-			record = get_link_to_form("Student Attendance", attendance_record)
-			frappe.throw(
-				_("Student Attendance record {0} already exists against the Student {1}").format(
-					record, frappe.bold(self.student)
-				),
-				title=_("Duplicate Entry"),
-			)
-
-	def validate_is_holiday(self):
-		holiday_list = get_holiday_list()
-		if is_holiday(holiday_list, self.date):
-			frappe.throw(
-				_("Attendance cannot be marked for {0} as it is a holiday.").format(
-					frappe.bold(formatdate(self.date))
-				)
-			)
+    def validate_duplication(self):
+        """Check for duplicate attendance on same date for same event"""
+        attendance_type = getattr(self, 'attendance_type', None) or 'Class'
+        
+        filters = {
+            "student": self.student,
+            "date": self.date,
+            "docstatus": ("!=", 2),
+            "name": ("!=", self.name)
+        }
+        
+        if attendance_type == "Class":
+            if self.course_schedule:
+                filters["course_schedule"] = self.course_schedule
+            elif self.student_group:
+                filters["student_group"] = self.student_group
+        else:
+            school_activity = getattr(self, 'school_activity', None)
+            if school_activity:
+                filters["school_activity"] = school_activity
+        
+        existing = frappe.db.exists("Student Attendance", filters)
+        
+        if existing:
+            frappe.throw(
+                _("Attendance already recorded for {0} on {1}").format(
+                    self.student, formatdate(self.date)
+                ),
+                title=_("Duplicate Attendance")
+            )
 
 
 def get_holiday_list(company=None):
-	if not company:
-		company = get_default_company() or frappe.get_all("Company")[0].name
-
-	holiday_list = frappe.get_cached_value("Company", company, "default_holiday_list")
-	if not holiday_list:
-		frappe.throw(
-			_("Please set a default Holiday List for Company {0}").format(
-				frappe.bold(get_default_company())
-			)
-		)
-	return holiday_list
+    """Get holiday list - required by student_leave_application"""
+    if not company:
+        try:
+            from erpnext import get_default_company
+            company = get_default_company()
+        except:
+            pass
+    
+    if company:
+        return frappe.db.get_value("Company", company, "default_holiday_list")
+    
+    # Fallback - get any holiday list
+    holiday_list = frappe.db.get_value("Holiday List", filters={}, fieldname="name")
+    return holiday_list

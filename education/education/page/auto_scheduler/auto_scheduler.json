@@ -1,0 +1,22 @@
+{
+    "content": null,
+    "creation": "2026-03-14 10:00:00",
+    "docstatus": 0,
+    "doctype": "Page",
+    "icon": "fa fa-magic",
+    "idx": 0,
+    "modified": "2026-03-14 10:00:00",
+    "modified_by": "Administrator",
+    "module": "Education",
+    "name": "auto-scheduler",
+    "owner": "Administrator",
+    "page_name": "auto-scheduler",
+    "roles": [
+        {"role": "System Manager"},
+        {"role": "Education Manager"},
+        {"role": "Academics User"}
+    ],
+    "standard": "Yes",
+    "system_page": 0,
+    "title": "Auto Schedule Generator"
+}

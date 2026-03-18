@@ -1,0 +1,29 @@
+{
+ "cards": [
+  {
+   "card": "Sales Orders Count"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "New Signups",
+   "width": "Full"
+  },
+  {
+   "chart": "APPLICATION",
+   "width": "Half"
+  }
+ ],
+ "creation": "2026-03-14 01:53:56.536170",
+ "dashboard_name": "RESIDENCE",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 1,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2026-03-14 02:21:19.287804",
+ "modified_by": "meulewa6028@gmail.com",
+ "module": "Student Residence",
+ "name": "RESIDENCE",
+ "owner": "meulewa6028@gmail.com"
+}

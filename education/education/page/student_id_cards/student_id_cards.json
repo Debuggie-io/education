@@ -1,0 +1,8 @@
+{
+  "name": "student-id-cards",
+  "doctype": "Page",
+  "module": "Education",
+  "page_name": "student-id-cards",
+  "title": "Student ID Cards",
+  "standard": "Yes"
+}

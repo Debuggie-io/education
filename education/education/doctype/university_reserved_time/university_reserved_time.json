@@ -1,0 +1,338 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2026-03-14 11:56:14.840186",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "title",
+  "reservation_type",
+  "cb1",
+  "academic_term",
+  "is_recurring",
+  "is_active",
+  "time_section",
+  "start_time",
+  "end_time",
+  "cb2",
+  "specific_date",
+  "date_range_section",
+  "from_date",
+  "to_date",
+  "recurring_section",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+  "scope_section",
+  "applies_to",
+  "school",
+  "program",
+  "cb3",
+  "year_of_study",
+  "room_scope_section",
+  "affects_all_rooms",
+  "specific_building",
+  "specific_rooms",
+  "notes_section",
+  "description",
+  "cb4",
+  "created_by",
+  "approved_by",
+  "approval_date"
+ ],
+ "fields": [
+  {
+   "default": "URT-.YYYY.-",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Series",
+   "options": "URT-.YYYY.-"
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title",
+   "reqd": 1
+  },
+  {
+   "fieldname": "reservation_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Reservation Type",
+   "options": "Chapel\nAssembly\nUniversity Event\nExam Period\nHoliday\nMaintenance\nOther",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "academic_term",
+   "fieldtype": "Link",
+   "label": "Academic Term",
+   "options": "Academic Term"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_recurring",
+   "fieldtype": "Check",
+   "label": "Recurring Weekly"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active"
+  },
+  {
+   "fieldname": "time_section",
+   "fieldtype": "Section Break",
+   "label": "Time Details"
+  },
+  {
+   "fieldname": "start_time",
+   "fieldtype": "Time",
+   "label": "Start Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_time",
+   "fieldtype": "Time",
+   "label": "End Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "cb2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.is_recurring==0",
+   "fieldname": "specific_date",
+   "fieldtype": "Date",
+   "label": "Specific Date"
+  },
+  {
+   "depends_on": "eval:doc.is_recurring==0",
+   "fieldname": "date_range_section",
+   "fieldtype": "Section Break",
+   "label": "Date Range (for multi-day events)"
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date"
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "depends_on": "eval:doc.is_recurring==1",
+   "fieldname": "recurring_section",
+   "fieldtype": "Section Break",
+   "label": "Recurring Days"
+  },
+  {
+   "default": "0",
+   "fieldname": "monday",
+   "fieldtype": "Check",
+   "label": "Monday"
+  },
+  {
+   "default": "0",
+   "fieldname": "tuesday",
+   "fieldtype": "Check",
+   "label": "Tuesday"
+  },
+  {
+   "default": "0",
+   "fieldname": "wednesday",
+   "fieldtype": "Check",
+   "label": "Wednesday"
+  },
+  {
+   "default": "0",
+   "fieldname": "thursday",
+   "fieldtype": "Check",
+   "label": "Thursday"
+  },
+  {
+   "default": "0",
+   "fieldname": "friday",
+   "fieldtype": "Check",
+   "label": "Friday"
+  },
+  {
+   "default": "0",
+   "fieldname": "saturday",
+   "fieldtype": "Check",
+   "label": "Saturday"
+  },
+  {
+   "default": "0",
+   "fieldname": "sunday",
+   "fieldtype": "Check",
+   "label": "Sunday"
+  },
+  {
+   "fieldname": "scope_section",
+   "fieldtype": "Section Break",
+   "label": "Who Does This Affect?"
+  },
+  {
+   "default": "All Students",
+   "fieldname": "applies_to",
+   "fieldtype": "Select",
+   "label": "Applies To",
+   "options": "All Students\nSpecific School\nSpecific Program\nSpecific Year"
+  },
+  {
+   "depends_on": "eval:doc.applies_to=='Specific School'",
+   "fieldname": "school",
+   "fieldtype": "Link",
+   "label": "School",
+   "options": "Department"
+  },
+  {
+   "depends_on": "eval:doc.applies_to=='Specific Program'",
+   "fieldname": "program",
+   "fieldtype": "Link",
+   "label": "Program",
+   "options": "Program"
+  },
+  {
+   "fieldname": "cb3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.applies_to=='Specific Year'",
+   "fieldname": "year_of_study",
+   "fieldtype": "Select",
+   "label": "Year of Study",
+   "options": "\n1\n2\n3\n4\n5"
+  },
+  {
+   "fieldname": "room_scope_section",
+   "fieldtype": "Section Break",
+   "label": "Room Restrictions"
+  },
+  {
+   "default": "1",
+   "description": "If checked, no rooms can be booked during this time",
+   "fieldname": "affects_all_rooms",
+   "fieldtype": "Check",
+   "label": "Blocks All Rooms"
+  },
+  {
+   "depends_on": "eval:doc.affects_all_rooms==0",
+   "fieldname": "specific_building",
+   "fieldtype": "Link",
+   "label": "Specific Building Only",
+   "options": "Building"
+  },
+  {
+   "depends_on": "eval:doc.affects_all_rooms==0",
+   "fieldname": "specific_rooms",
+   "fieldtype": "Table",
+   "label": "Specific Rooms Only",
+   "options": "Reserved Time Room"
+  },
+  {
+   "fieldname": "notes_section",
+   "fieldtype": "Section Break",
+   "label": "Additional Information"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "cb4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "__user",
+   "fieldname": "created_by",
+   "fieldtype": "Link",
+   "label": "Created By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "approved_by",
+   "fieldtype": "Link",
+   "label": "Approved By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "approval_date",
+   "fieldtype": "Date",
+   "label": "Approval Date",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-03-14 11:56:14.840186",
+ "modified_by": "Administrator",
+ "module": "Education",
+ "name": "University Reserved Time",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Education Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Academics User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

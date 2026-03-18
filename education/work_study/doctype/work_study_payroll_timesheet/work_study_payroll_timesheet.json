@@ -1,0 +1,64 @@
+{
+  "name": "Work Study Payroll Timesheet",
+  "module": "Work Study",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "istable": 1,
+  "editable_grid": 1,
+  "track_changes": 0,
+  "fields": [
+    {
+      "fieldname": "timesheet",
+      "fieldtype": "Link",
+      "label": "Timesheet",
+      "options": "Work Study Timesheet",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "student",
+      "fieldtype": "Link",
+      "label": "Student",
+      "options": "Student",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "student_name",
+      "fieldtype": "Data",
+      "label": "Student Name",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "hours",
+      "fieldtype": "Float",
+      "label": "Hours",
+      "in_list_view": 1,
+      "precision": 2
+    },
+    {
+      "fieldname": "amount",
+      "fieldtype": "Currency",
+      "label": "Amount",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "payment_status",
+      "fieldtype": "Select",
+      "label": "Payment Status",
+      "options": "Pending\nProcessed\nFailed",
+      "default": "Pending",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "journal_entry",
+      "fieldtype": "Link",
+      "label": "Journal Entry",
+      "options": "Journal Entry"
+    },
+    {
+      "fieldname": "error_message",
+      "fieldtype": "Small Text",
+      "label": "Error Message"
+    }
+  ]
+}

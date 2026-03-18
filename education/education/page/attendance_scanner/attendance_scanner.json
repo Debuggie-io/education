@@ -1,0 +1,38 @@
+{
+ "content": null,
+ "creation": "2026-03-16 13:14:41.520099",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2026-03-16 13:28:44.510982",
+ "modified_by": "Administrator",
+ "module": "Education",
+ "name": "attendance-scanner",
+ "owner": "Administrator",
+ "page_name": "attendance-scanner",
+ "roles": [
+  {
+   "role": "Administrator"
+  },
+  {
+   "role": "Residence Administrator"
+  },
+  {
+   "role": "Instructor"
+  },
+  {
+   "role": "SAMS HOD"
+  },
+  {
+   "role": "SAMS Resident Assistant (R.A)"
+  },
+  {
+   "role": "SAMS Resident Secretary"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Attendance Scanner"
+}

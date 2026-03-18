@@ -1,0 +1,31 @@
+{
+    "add_total_row": 0,
+    "columns": [],
+    "disabled": 0,
+    "doctype": "Report",
+    "filters": [
+        {
+            "fieldname": "academic_term",
+            "fieldtype": "Link",
+            "label": "Academic Term",
+            "options": "Academic Term"
+        },
+        {
+            "fieldname": "timetable",
+            "fieldtype": "Link",
+            "label": "Timetable",
+            "options": "Timetable"
+        }
+    ],
+    "is_standard": "Yes",
+    "module": "Education",
+    "name": "Timetable Conflicts",
+    "ref_doctype": "Timetable Entry",
+    "report_name": "Timetable Conflicts",
+    "report_type": "Script Report",
+    "roles": [
+        {"role": "System Manager"},
+        {"role": "Education Manager"},
+        {"role": "Academics User"}
+    ]
+}

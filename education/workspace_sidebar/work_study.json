@@ -1,0 +1,89 @@
+{
+ "app": "education",
+ "creation": "2026-03-11 09:29:07.955761",
+ "docstatus": 0,
+ "doctype": "Workspace Sidebar",
+ "header_icon": "briefcase",
+ "idx": 0,
+ "items": [
+  {
+   "child": 0,
+   "collapsible": 1,
+   "icon": "home",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Home",
+   "link_to": "Work Study",
+   "link_type": "Workspace",
+   "show_arrow": 0,
+   "type": "Link"
+  },
+  {
+   "child": 0,
+   "collapsible": 1,
+   "icon": "message-square-warning",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Appeals",
+   "link_to": "Work Study Appeals",
+   "link_type": "Workspace",
+   "show_arrow": 0,
+   "type": "Link"
+  },
+  {
+   "child": 0,
+   "collapsible": 1,
+   "icon": "clipboard-clock",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Time Sheet",
+   "link_to": "Work Study Payroll Timesheet",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Link"
+  },
+  {
+   "child": 0,
+   "collapsible": 1,
+   "icon": "square-user-round",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Position ",
+   "link_to": "Work Study Position",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Link"
+  },
+  {
+   "child": 0,
+   "collapsible": 1,
+   "icon": "check-line",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Application",
+   "link_to": "Work Study Application",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Link"
+  },
+  {
+   "child": 0,
+   "collapsible": 1,
+   "icon": "git-branch-plus",
+   "indent": 0,
+   "keep_closed": 0,
+   "label": "Work Study Assignment",
+   "link_to": "Work Study Assignment",
+   "link_type": "DocType",
+   "show_arrow": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-03-16 09:47:36.122295",
+ "modified_by": "Administrator",
+ "module": "Work Study Program",
+ "name": "Work Study",
+ "owner": "Administrator",
+ "standard": 1,
+ "title": "Work Study"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "semester-registration",
+  "doctype": "Page",
+  "module": "Education",
+  "page_name": "semester-registration",
+  "title": "Semester Registration",
+  "standard": "Yes"
+}

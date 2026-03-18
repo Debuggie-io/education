@@ -1,0 +1,37 @@
+<h2>Schedule Updated</h2>
+<p>Your class schedule has been updated:</p>
+
+<table style="border-collapse: collapse; width: 100%; max-width: 500px;">
+    <tr style="background: #fff3cd;">
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Course</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6;">{{ course }}</td>
+    </tr>
+    <tr>
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Day</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6;">{{ day }}</td>
+    </tr>
+    <tr style="background: #f8f9fa;">
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Time</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6;">{{ time }}</td>
+    </tr>
+    <tr>
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Room</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6;">{{ room }}</td>
+    </tr>
+    <tr style="background: #f8f9fa;">
+        <td style="padding: 12px; border: 1px solid #dee2e6; font-weight: bold;">Instructor</td>
+        <td style="padding: 12px; border: 1px solid #dee2e6;">{{ instructor }}</td>
+    </tr>
+</table>
+
+<p style="margin-top: 20px; color: #856404; background: #fff3cd; padding: 15px; border-radius: 6px;">
+    ⚠️ Please note the changes to your schedule.
+</p>
+
+<p style="margin-top: 20px;">
+    <a href="{{ frappe.utils.get_url() }}/app/my-timetable" 
+       style="display: inline-block; background: #ff9800; color: white; padding: 12px 24px; 
+              text-decoration: none; border-radius: 6px; font-weight: bold;">
+        View Updated Timetable
+    </a>
+</p>

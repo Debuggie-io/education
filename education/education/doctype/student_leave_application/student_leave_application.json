@@ -13,13 +13,29 @@
   "to_date",
   "total_leave_days",
   "section_break_5",
-  "attendance_based_on",
-  "student_group",
-  "course_schedule",
   "mark_as_present",
   "column_break_11",
   "reason",
-  "amended_from"
+  "amended_from",
+  "ueab_sign_out_details_section",
+  "room_number",
+  "column_break_hshu",
+  "destination",
+  "means_of_travel",
+  "column_break_isju",
+  "purpose_of_travel",
+  "leave_type",
+  "column_break_ejie",
+  "departure_date_and_time",
+  "return_date_and_time",
+  "section_break_15t0",
+  "contact_tel_during_break",
+  "column_break_u23i",
+  "emergency_contact_name",
+  "column_break_tw2t",
+  "emergency_contact_phone",
+  "column_break_i6d1",
+  "parent_guardian_approved"
  ],
  "fields": [
   {
@@ -69,6 +85,7 @@
    "fieldtype": "Section Break"
   },
   {
+   "description": "Reason for leaveout application",
    "fieldname": "reason",
    "fieldtype": "Text",
    "label": "Reason"
@@ -83,33 +100,6 @@
    "read_only": 1
   },
   {
-   "allow_in_quick_entry": 1,
-   "default": "Student Group",
-   "fieldname": "attendance_based_on",
-   "fieldtype": "Select",
-   "label": "Attendance Based On",
-   "options": "Student Group\nCourse Schedule"
-  },
-  {
-   "allow_in_quick_entry": 1,
-   "depends_on": "eval:doc.attendance_based_on === \"Student Group\";",
-   "fieldname": "student_group",
-   "fieldtype": "Link",
-   "label": "Student Group",
-   "link_filters": "[]",
-   "mandatory_depends_on": "eval:doc.attendance_based_on === \"Student Group\";",
-   "options": "Student Group"
-  },
-  {
-   "allow_in_quick_entry": 1,
-   "depends_on": "eval:doc.attendance_based_on === \"Course Schedule\";",
-   "fieldname": "course_schedule",
-   "fieldtype": "Link",
-   "label": "Course Schedule",
-   "mandatory_depends_on": "eval:doc.attendance_based_on === \"Course Schedule\";",
-   "options": "Course Schedule"
-  },
-  {
    "fieldname": "column_break_11",
    "fieldtype": "Column Break"
   },
@@ -118,15 +108,118 @@
    "fieldtype": "Float",
    "label": "Total Leave Days",
    "read_only": 1
+  },
+  {
+   "fieldname": "ueab_sign_out_details_section",
+   "fieldtype": "Section Break",
+   "label": "Ueab Sign Out Details"
+  },
+  {
+   "fieldname": "room_number",
+   "fieldtype": "Data",
+   "label": "Room Number",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_hshu",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "destination",
+   "fieldtype": "Data",
+   "label": "Destination",
+   "reqd": 1
+  },
+  {
+   "fieldname": "means_of_travel",
+   "fieldtype": "Select",
+   "label": "Means of Travel",
+   "options": "Personal Vehicle\nPublic Transport\nUniversity Bus\nWalking\nOther",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_isju",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "purpose_of_travel",
+   "fieldtype": "Data",
+   "label": "Purpose of Travel",
+   "reqd": 1
+  },
+  {
+   "fieldname": "leave_type",
+   "fieldtype": "Select",
+   "label": "Leave Type",
+   "options": "Day Leave\nOvernight\nWeekend\nOther",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_ejie",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "departure_date_and_time",
+   "fieldtype": "Datetime",
+   "label": "Departure Date and Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "return_date_and_time",
+   "fieldtype": "Datetime",
+   "label": "Return Date and Time",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_15t0",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "contact_tel_during_break",
+   "fieldtype": "Data",
+   "label": "Contact Tel During Break",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_u23i",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "emergency_contact_name",
+   "fieldtype": "Data",
+   "label": "Emergency Contact Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_tw2t",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "emergency_contact_phone",
+   "fieldtype": "Data",
+   "label": "Emergency Contact Phone",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_i6d1",
+   "fieldtype": "Section Break",
+   "label": "Confirmation"
+  },
+  {
+   "default": "0",
+   "fieldname": "parent_guardian_approved",
+   "fieldtype": "Check",
+   "label": "Parent Guardian Approved",
+   "reqd": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2023-12-19 10:17:31.704531",
- "modified_by": "Administrator",
+ "modified": "2026-03-14 18:42:16.473595",
+ "modified_by": "bensidneyndungu@gmail.com",
  "module": "Education",
  "name": "Student Leave Application",
- "naming_rule": "Expression (old style)",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {
@@ -169,9 +262,27 @@
   }
  ],
  "quick_entry": 1,
+ "row_format": "Dynamic",
  "show_name_in_global_search": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
- "states": [],
+ "states": [
+  {
+   "color": "Green",
+   "title": "Approved"
+  },
+  {
+   "color": "Yellow",
+   "title": "Submmited"
+  },
+  {
+   "color": "Red",
+   "title": "Rejected"
+  },
+  {
+   "color": "Orange",
+   "title": "Under Review"
+  }
+ ],
  "title_field": "student_name"
 }

@@ -1,6 +1,6 @@
 {
  "app": "education",
- "bg_color": "gray",
+ "bg_color": "blue",
  "creation": "2026-03-12 15:16:18.033823",
  "docstatus": 0,
  "doctype": "Desktop Icon",
@@ -10,7 +10,7 @@
  "label": "Student Governance",
  "link_to": "Student Governance",
  "link_type": "Workspace Sidebar",
- "modified": "2026-03-12 15:16:18.033823",
+ "modified": "2026-03-16 10:03:32.029604",
  "modified_by": "Administrator",
  "name": "Student Governance",
  "owner": "Administrator",

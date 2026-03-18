@@ -1,0 +1,226 @@
+{
+  "name": "Work Study Payroll Entry",
+  "module": "Work Study",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "naming_rule": "Expression",
+  "autoname": "WSPE-.YYYY.-.#####",
+  "is_submittable": 1,
+  "track_changes": 1,
+  "fields": [
+    {
+      "fieldname": "title",
+      "fieldtype": "Data",
+      "label": "Title",
+      "reqd": 1,
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "company",
+      "fieldtype": "Link",
+      "label": "Company",
+      "options": "Company",
+      "reqd": 1,
+      "default": null
+    },
+    {
+      "fieldname": "column_break_1",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "posting_date",
+      "fieldtype": "Date",
+      "label": "Posting Date",
+      "reqd": 1,
+      "default": "Today",
+      "in_list_view": 1
+    },
+    {
+      "fieldname": "status",
+      "fieldtype": "Select",
+      "label": "Status",
+      "options": "Draft\nTimesheets Fetched\nProcessing\nCompleted\nFailed",
+      "default": "Draft",
+      "in_list_view": 1,
+      "read_only": 1
+    },
+    {
+      "fieldname": "section_period",
+      "fieldtype": "Section Break",
+      "label": "Payroll Period"
+    },
+    {
+      "fieldname": "payroll_period_start",
+      "fieldtype": "Date",
+      "label": "Period Start Date",
+      "reqd": 1
+    },
+    {
+      "fieldname": "payroll_period_end",
+      "fieldtype": "Date",
+      "label": "Period End Date",
+      "reqd": 1
+    },
+    {
+      "fieldname": "column_break_2",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "academic_year",
+      "fieldtype": "Link",
+      "label": "Academic Year",
+      "options": "Academic Year"
+    },
+    {
+      "fieldname": "academic_term",
+      "fieldtype": "Link",
+      "label": "Academic Term",
+      "options": "Academic Term"
+    },
+    {
+      "fieldname": "section_filters",
+      "fieldtype": "Section Break",
+      "label": "Filters"
+    },
+    {
+      "fieldname": "department",
+      "fieldtype": "Link",
+      "label": "Department",
+      "options": "Department",
+      "description": "Leave blank to include all departments"
+    },
+    {
+      "fieldname": "work_study_position",
+      "fieldtype": "Link",
+      "label": "Work Study Position",
+      "options": "Work Study Position",
+      "description": "Leave blank to include all positions"
+    },
+    {
+      "fieldname": "section_timesheets",
+      "fieldtype": "Section Break",
+      "label": "Approved Timesheets"
+    },
+    {
+      "fieldname": "timesheets",
+      "fieldtype": "Table",
+      "label": "Timesheets",
+      "options": "Work Study Payroll Timesheet",
+      "read_only": 1
+    },
+    {
+      "fieldname": "section_summary",
+      "fieldtype": "Section Break",
+      "label": "Summary"
+    },
+    {
+      "fieldname": "total_timesheets",
+      "fieldtype": "Int",
+      "label": "Total Timesheets",
+      "read_only": 1
+    },
+    {
+      "fieldname": "total_hours",
+      "fieldtype": "Float",
+      "label": "Total Hours",
+      "read_only": 1,
+      "precision": 2
+    },
+    {
+      "fieldname": "total_amount",
+      "fieldtype": "Currency",
+      "label": "Total Amount",
+      "read_only": 1
+    },
+    {
+      "fieldname": "column_break_3",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "total_students",
+      "fieldtype": "Int",
+      "label": "Total Students",
+      "read_only": 1
+    },
+    {
+      "fieldname": "processed_count",
+      "fieldtype": "Int",
+      "label": "Processed Count",
+      "read_only": 1
+    },
+    {
+      "fieldname": "failed_count",
+      "fieldtype": "Int",
+      "label": "Failed Count",
+      "read_only": 1
+    },
+    {
+      "fieldname": "section_accounts",
+      "fieldtype": "Section Break",
+      "label": "Account Settings"
+    },
+    {
+      "fieldname": "work_study_expense_account",
+      "fieldtype": "Link",
+      "label": "Work Study Expense Account",
+      "options": "Account",
+      "reqd": 1
+    },
+    {
+      "fieldname": "student_wallet_parent_account",
+      "fieldtype": "Link",
+      "label": "Student Wallet Parent Account",
+      "options": "Account",
+      "description": "Parent account under which student wallets are created"
+    },
+    {
+      "fieldname": "column_break_4",
+      "fieldtype": "Column Break"
+    },
+    {
+      "fieldname": "cost_center",
+      "fieldtype": "Link",
+      "label": "Cost Center",
+      "options": "Cost Center"
+    },
+    {
+      "fieldname": "section_errors",
+      "fieldtype": "Section Break",
+      "label": "Processing Log",
+      "collapsible": 1
+    },
+    {
+      "fieldname": "processing_log",
+      "fieldtype": "Long Text",
+      "label": "Processing Log",
+      "read_only": 1
+    }
+  ],
+  "permissions": [
+    {
+      "role": "System Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "delete": 1,
+      "submit": 1,
+      "cancel": 1
+    },
+    {
+      "role": "HR Manager",
+      "read": 1,
+      "write": 1,
+      "create": 1,
+      "submit": 1,
+      "cancel": 1
+    },
+    {
+      "role": "Accounts Manager",
+      "read": 1,
+      "write": 1,
+      "submit": 1
+    }
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC"
+}
